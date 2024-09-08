@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function WatchList() {
@@ -67,7 +67,7 @@ export default function WatchList() {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
                         <div className="mr-1 mt-3 mb-4">
-                            <a href="#" className="btn btn-link text-lg">新規登録</a>
+                            <Link href="#" className="btn btn-link text-lg">新規登録</Link>
 
                             {/* @session('flash_message')
                             {{ session('flash_message') }}
@@ -112,7 +112,7 @@ export default function WatchList() {
                                                                             {watchList.status === 1 ? '✅' : '👀'}
                                                                         </td>
                                                                         <td className="flex border border-slate-300 px-6 py-4 justify-center gap-4">
-                                                                            <a href="#" className="btn btn-outline btn-primary">編集</a>
+                                                                            <Link href="#" className="btn btn-outline btn-primary">編集</Link>
                                                                             <button className="btn btn-outline btn-secondary" onClick={() => confirm('本当に削除しますか？')}>削除</button>
                                                                         </td>
                                                                     </tr>
