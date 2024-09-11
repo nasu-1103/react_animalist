@@ -77,7 +77,7 @@ export default function WatchList() {
                             {{ session('error_message') }}
                             @endsession */}
 
-                            {animeGroupList.leeength > 0 ? (
+                            {animeGroupList.length > 0 ? (
                                 animeGroupList.map((animeGroup) => (
                                     <div key={animeGroup.id} className="text-gray-900">
                                         <div className="card bg-base-100 shadow-xl mt-6 text-lg">
@@ -103,20 +103,29 @@ export default function WatchList() {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {anime.watchlists.map((watchList) => (
-                                                                    <tr key={watchList.id} className="text-center">
-                                                                        <td className="border border-slate-300 px-6 py-4">{anime.episode}話</td>
-                                                                        <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
-                                                                        <td className="border border-slate-300 px-6 py-4">{watchList.created_at}</td>
-                                                                        <td className="border border-slate-300 px-6 py-4">
-                                                                            {watchList.status === 1 ? '✅' : '👀'}
-                                                                        </td>
-                                                                        <td className="flex border border-slate-300 px-6 py-4 justify-center gap-4">
-                                                                            <Link href="#" className="btn btn-outline btn-primary">編集</Link>
-                                                                            <button className="btn btn-outline btn-secondary" onClick={() => confirm('本当に削除しますか？')}>削除</button>
-                                                                        </td>
-                                                                    </tr>
-                                                                        ))}
+                                                                    {anime.watchlists.length > 0 ? (
+                                                                        anime.watchlists.map((watchList) => (
+                                                                            <tr key={watchList.id} className="text-center">
+                                                                                <td className="border border-slate-300 px-6 py-4">{anime.episode}話</td>
+                                                                                <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
+                                                                                <td className="border border-slate-300 px-6 py-4">{watchList.created_at}</td>
+                                                                                <td className="border border-slate-300 px-6 py-4">
+                                                                                    {watchList.status === 1 ? '✅' : '👀'}
+                                                                                </td>
+                                                                                <td className="flex border border-slate-300 px-6 py-4 justify-center gap-4">
+                                                                                    <Link href="#" className="btn btn-outline btn-primary">編集</Link>
+                                                                                    <button className="btn btn-outline btn-secondary" onClick={() => confirm('本当に削除しますか？')}>削除</button>
+                                                                                </td>
+                                                                            </tr>
+                                                                        ))
+                                                                    ) : (
+                                                                        // ウォッチリストにデータがない場合
+                                                                        <tr>
+                                                                            <td className="border border-slate-300 px-6 py-4"></td>
+                                                                            <td className="border border-slate-300 px-6 py-4"></td>
+                                                                            <td className="border border-slate-300 px-6 py-4"></td>
+                                                                        </tr>
+                                                                    )}
                                                                 </tbody>
                                                             </table>
                                                         </div>
