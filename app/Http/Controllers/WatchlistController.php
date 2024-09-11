@@ -138,7 +138,7 @@ class WatchlistController extends Controller
 
         $animes = Anime::all();
 
-        return view('watch_lists.edit', compact('watch_list', 'animes'));
+        return Inertia::render('watch_lists/Edit');
     }
 
     public function update(Request $request, Watchlist $watch_list)
