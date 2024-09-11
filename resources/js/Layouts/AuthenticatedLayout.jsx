@@ -93,6 +93,7 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
+                        {/* 'watch_list.index' ルートのリンクを作成 */}
                         <ResponsiveNavLink href={route('watch_list.index')} active={route().current('watch_list.index')}>
                             視聴リスト
                         </ResponsiveNavLink>
