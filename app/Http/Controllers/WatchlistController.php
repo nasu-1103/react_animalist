@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class WatchlistController extends Controller
 {
@@ -70,7 +71,7 @@ class WatchlistController extends Controller
             ->doesntHave('hiddenLists')
             ->paginate(15);
 
-        return view('watch_lists.index', ['watch_lists' => $watch_lists, 'anime_group_lists' => $anime_group_lists]);
+        return Inertia::render('watch_lists/Index');
     }
 
     public function selectAnimeGroup()
