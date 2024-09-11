@@ -20,8 +20,9 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
+                            {/* 視聴リスト一覧のリンク */}
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('watch_lists/Index')} active={route().current('watch_lists/Index')}>
+                                <NavLink href={route('watch_list.index')} active={route().current('watch_list.index')}>
                                     視聴リスト一覧
                                 </NavLink>
                             </div>
