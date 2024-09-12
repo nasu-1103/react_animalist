@@ -71,7 +71,7 @@ class WatchlistController extends Controller
             ->doesntHave('hiddenLists')
             ->paginate(15);
 
-        return Inertia::render('watch_lists/Index');
+        return Inertia::render('watch_lists/Index', ['animeGroups' => AnimeGroup::with(['animes'])->get()]);
     }
 
     public function selectAnimeGroup()
