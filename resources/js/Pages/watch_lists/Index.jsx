@@ -3,14 +3,17 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function WatchList({ animeGroups }) {
+    // 検索キーワードを入力するための初期データを設定
     const { data, setData } = useForm({
         'keyword': ''
     });
 
+    // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
         animeGroup => animeGroup.name.includes(data.keyword)
     );
 
+    // 一致したアニメグループのリストを作成
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
             <p className='text-2xl'>{animeGroup.name}</p>
@@ -51,10 +54,12 @@ export default function WatchList({ animeGroups }) {
         </>
     )
 
+    // ウォッチリストの削除処理
     function deleteWatchList(event) {
         console.log(event.target.dataset.id);
     }
 
+    // ステータス変更の処理
     function changeStatus(event) {
         console.log(event.target.dataset.id);
     }
@@ -191,7 +196,7 @@ export default function WatchList({ animeGroups }) {
                                                                             </tr>
                                                                         ))
                                                                     ) : (
-                                                                        // ウォッチリストにデータがない場合
+                                                                        // ウォッチリストにデータがなくても罫線を引く
                                                                         <tr>
                                                                             <td className="border border-slate-300 px-6 py-4"></td>
                                                                             <td className="border border-slate-300 px-6 py-4"></td>
