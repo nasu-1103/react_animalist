@@ -27,24 +27,6 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
                         </div>
-
-                        {/* @can('admin') */}
-                        {/* アニメ一覧のリンク */}
-                        <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <NavLink href={route('animes.index')} active={route().current('animes.index')}>
-                                アニメ一覧
-                            </NavLink>
-                        </div>
-                        {/* @endcan */}
-
-                        {/* @can('admin') */}
-                        {/* アニメグループ一覧のリンク */}
-                        <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <NavLink href={route('anime_groups.index')} active={route().current('anime_groups.index')}>
-                                アニメグループ一覧
-                            </NavLink>
-                        </div>
-                        {/* @endcan */}
                         
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="ms-3 relative">
@@ -74,9 +56,9 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('profile.edit')}>アカウント</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
-                                            Log Out
+                                            ログアウト
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
