@@ -1,8 +1,63 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function WatchList() {
+export default function WatchList({ animeGroups }) {
+    const { data, setData } = useForm({
+        'keyword': ''
+    });
+
+    const animeGroupsLocal = animeGroups.filter(
+        animeGroup => animeGroup.name.includes(data.keyword)
+    );
+
+    const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
+        <>
+            <p className='text-2xl'>{animeGroup.name}</p>
+            <hr />
+            <p>
+                <table className="w-full text-gray-700 text-nowrap">
+                    <thead>
+                        <tr>
+                            <th className="mt-4 w-24">話数</th>
+                            <th className="mt-4 w-72">サブタイトル</th>
+                            <th className="mt-4 w-48">視聴日</th>
+                            <th className="mt-4 w-16">ステータス</th>
+                            <th className="mt-4 w-36">エディット</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {animeGroup.animes.map(anime =>
+                            <>
+                                <tr className="text-center">
+                                    <td className="border border-slate-300 px-6 py-4">{anime.episode + '話'}</td>
+                                    <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
+                                    <td className="border border-slate-300 px-6 py-4">{anime.created_at}</td>
+                                    <td className="border border-slate-300 px-6 py-4">
+                                        <select onChange={changeStatus} data-id={anime.id}>
+                                            <option value="false" selected>未視聴</option>
+                                            <option value="true">視聴済み</option>
+                                        </select>
+                                    </td>
+                                    <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
+                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.id}>削除</button>
+                                    </td>
+                                </tr>
+                            </>
+                        )}
+                    </tbody>
+                </table>
+            </p>
+        </>
+    )
+
+    function deleteWatchList(event) {
+        console.log(event.target.dataset.id);
+    }
+
+    function changeStatus(event) {
+        console.log(event.target.dataset.id);
+    }
     // 一時的に固定値を設定
     const animeGroupList = [
         {
@@ -31,7 +86,7 @@ export default function WatchList() {
 
     return (
         <AuthenticatedLayout
-            user={{ name: 'なす' }}
+            user={auth.user}
             header={
                 <form action="#" method="GET">
                     <div className="col-auto flex">
@@ -40,10 +95,10 @@ export default function WatchList() {
                             type="text"
                             name="keyword"
                             className="ml-4 mt-1 block w-96 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
+                            value={data.keyword}
+                            onChange={(e) => setData('keyword', e.target.value)}
                         />
-                        <button type="submit" className="btn btn-outline btn-info ml-3 mt-1">
+                        {/* <button type="submit" className="btn btn-outline btn-info ml-3 mt-1">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -56,7 +111,7 @@ export default function WatchList() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                        </button>
+                        </button> */}
                     </div>
                 </form>
             }
@@ -67,7 +122,7 @@ export default function WatchList() {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
                         <div className="mr-1 mt-3 mb-4">
-                            <Link href="#" className="btn btn-link text-lg">新規登録</Link>
+                            {/* <Link href="#" className="btn btn-link text-lg">新規登録</Link> */}
 
                             {/* @session('flash_message')
                             {{ session('flash_message') }}
@@ -76,6 +131,8 @@ export default function WatchList() {
                             @session('error_message')
                             {{ session('error_message') }}
                             @endsession */}
+
+                            {animeGroupsLists}
 
                             {animeGroupList.length > 0 ? (
                                 animeGroupList.map((animeGroup) => (
