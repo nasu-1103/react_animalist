@@ -36,6 +36,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ],[
             'name.max' => '名前は最大255文字までです。',
+            'email.required' => 'メールアドレスは必須です。',
             'password.confirmd' => 'パスワードが一致しません。'
         ]);
 
