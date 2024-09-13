@@ -50,4 +50,27 @@ class WatchlistAPIController extends Controller
             return ['result'=> 'error'];
         }
     }
+
+    public function changeStatus(Request $request)
+    {
+        // アニメIDを取得
+        $animeId = $request->input('anime_id');
+
+        // アニメIDに関連するウォッチリストのエピソードを取得
+        $watchlists = WatchList::where('anime_id', $animeId)->get();
+
+        // ウォッチリスト内のエピソードに、未視聴または視聴中があるかチェック
+        $hasUnwatchedOrWatching = $watchlists->contains(function ($watchlist) {
+            return $watchlist->status != 1;
+        });
+
+        // 👑を表示するかの条件を設定
+        if ($hasUnwatchedOrWatching) {
+            // 未視聴または視聴中のエピソードがある場合、👑は表示しない
+            return response()->json(['👑' => false]);
+        } else {
+            // 全てのエピソードが視聴済みの場合、👑を表示
+            return response()->json(['👑' => true]);
+        }
+    }
 }
