@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function WatchList({ animeGroups }) {
+export default function WatchList({ auth, animeGroups }) {
     // 検索キーワードを入力するための初期データを設定
     const { data, setData } = useForm({
         'keyword': ''
