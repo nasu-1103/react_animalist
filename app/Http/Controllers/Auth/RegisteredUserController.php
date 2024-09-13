@@ -34,6 +34,9 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ],[
+            'name.max' => '名前は最大255文字までです。',
+            'password.confirmd' => 'パスワードが一致しません。'
         ]);
 
         $user = User::create([
