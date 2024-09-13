@@ -129,13 +129,14 @@ export default function WatchList({ auth, animeGroups }) {
                         <div className="mr-1 mt-3 mb-4">
                             {/* <Link href="#" className="btn btn-link text-lg">新規登録</Link> */}
 
-                            {/* @session('flash_message')
-                            {{ session('flash_message') }}
-                            @endsession
+                            <div v-if="$page.props.flash.message" class="alert">
+                                {{ $page.props.flash.message }}
+                            </div>
 
-                            @session('error_message')
-                            {{ session('error_message') }}
-                            @endsession */}
+                            <div v-if="$page.props.error.message" class="alert-error">
+                                {{ $page.props.error.message }}
+                                </div>
+                            </div>
 
                             {animeGroupsLists}
 
