@@ -2,9 +2,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
-export default function WatchList({ auth, animeGroups }) {
+export default function WatchList({ auth, animeGroups, flash_message = null, error_message = null }) {
     // 検索キーワードを入力するための初期データを設定
-    const { data, setData } = useForm({
+    const { data, setData, post, delete: destroy } = useForm({
         'keyword': ''
     });
 
@@ -28,11 +28,12 @@ export default function WatchList({ auth, animeGroups }) {
                 console.error('データ取得エラー:', error);
                 setErrorMessage('不正なアクセスです。');
             });
-    }, []);  
+    }, []);
 
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
-        animeGroup => animeGroup.name.includes(data.keyword)
+        animeGroup => animeGroup.name.includes(data.keyword) ||
+            animeGroup.animes.map(anime => anime.sub_title).includes(data.keyword)
     );
 
     // 一致したアニメグループのリストを作成
@@ -57,15 +58,16 @@ export default function WatchList({ auth, animeGroups }) {
                                 <tr className="text-center">
                                     <td className="border border-slate-300 px-6 py-4">{anime.episode + '話'}</td>
                                     <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
-                                    <td className="border border-slate-300 px-6 py-4">{anime.created_at}</td>
+                                    <td className="border border-slate-300 px-6 py-4">{anime.watchlists[0]?.created_at}</td>
                                     <td className="border border-slate-300 px-6 py-4">
                                         <select onChange={changeStatus} data-id={anime.id}>
-                                            <option value="false" selected>未視聴</option>
-                                            <option value="true">視聴済み</option>
+                                            <option value="-1" selected>未視聴</option>
+                                            <option value="2" selected={anime.watchlists[0]?.status == 2}>視聴中</option>
+                                            <option value="1" selected={anime.watchlists[0]?.status == 1}>視聴済み</option>
                                         </select>
                                     </td>
                                     <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.id}>削除</button>
+                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists[0]?.id}>削除</button>
                                     </td>
                                 </tr>
                             </>
@@ -78,13 +80,15 @@ export default function WatchList({ auth, animeGroups }) {
 
     // ウォッチリストの削除処理
     function deleteWatchList(event) {
-        console.log(event.target.dataset.id);
+        destroy(route('watch_list.destroy', { "watch_list": event.target.dataset.id }));
         setFlashMessage('登録を削除しました。');
     }
 
     // ステータス変更の処理
     function changeStatus(event) {
-        console.log(event.target.dataset.id);
+        const anime_id = event.target.dataset.id;
+        const status = event.target.value;
+        post(route('watch_list.store', { " anime_id": anime_id, "status": status }));
         setFlashMessage('登録を編集しました。');
     }
     // 一時的に固定値を設定
@@ -154,18 +158,10 @@ export default function WatchList({ auth, animeGroups }) {
                             {/* <Link href="#" className="btn btn-link text-lg">新規登録</Link> */}
 
                             {/* フラッシュメッセージを表示 */}
-                            {flashMessage && (
-                                <div className="alert alert-success">
-                                    {flashMessage}
-                                </div>
-                            )}
+                            {flashMessage && <div className="mb-4 text-gray-700">{flashMessage}</div>}
 
                             {/* エラーメッセージを表示 */}
-                            {errorMessage && (
-                                <div className="alert alert-error">
-                                    {errorMessage}
-                                </div>
-                            )}
+                            {errorMessage && <div className="mb-4 text-gray-700">{errorMessage}</div>}
                         </div>
 
                         {animeGroupsLists}
