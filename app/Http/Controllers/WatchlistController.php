@@ -67,11 +67,13 @@ class WatchlistController extends Controller
                     return $query->where('user_id', Auth::user()->id);
                 },
                 'hiddenLists',
-            ])
+            ]
+        )
             ->doesntHave('hiddenLists')
-            ->paginate(15);
+            // ->paginate(15);
+            ->get();
 
-        return Inertia::render('watch_lists/Index', ['animeGroups' => AnimeGroup::with(['animes'])->get()]);
+        return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
     }
 
     public function selectAnimeGroup()
@@ -102,31 +104,25 @@ class WatchlistController extends Controller
         return view('watch_lists.create', compact('animes', 'watch_lists', 'watch_lists_comp', 'watch_lists_in', 'watch_lists_notes'));
     }
 
-    public function store(Request $request)
+    public function store($anime_id, $status)
     {
-        // バリデーションのエラーメッセージを設定
-        $request->validate([
-            'anime_check_lists' => 'required',
-        ], [
-            'anime_check_lists.required' => 'アニメチェックリストを選択してください。'
-        ]);
+        // ステータスが1または2の場合、ユーザーIDとアニメIDが一致するウォッチリストを取得
+        if ($status === "1" || $status === "2") {
+            $watchLists = WatchList::whereUserId(Auth::user()->id)->whereAnimeId($anime_id)->get();
+            // 既に登録されている場合、最初のウォッチリストを削除
+            if ($watchLists->count() >= 1) {
+                $watchLists[0]->delete();
+            }
 
-        // チェックされたアニメをウォッチリストに登録
-        foreach ($request->anime_check_lists as $anime_check_list) {
-            // 既にウォッチリストに登録されている場合はエラーをスロー
-            if (WatchList::whereAnime_id($anime_check_list)->whereUserId(Auth::user()->id)->get()->count() >= 1) {
-                throw ValidationException::withMessages([
-                    'anime_check_lists' => 'すでに登録されています。',
-                ]);
-            };
-
-            $watch_list = new WatchList();
-            $watch_list->anime_id = $anime_check_list;
-            $watch_list->user_id = Auth::user()->id;
-            $watch_list->save();
+            // 新しいウォッチリストを作成
+            WatchList::create([
+                'anime_id' => $anime_id,
+                'user_id' => Auth::user()->id,
+                'status' => $status,
+                // 'notes' => $request->notes,
+            ]);
         }
-
-        return redirect()->route('watch_list.index')->with('flash_message', '登録が完了しました。');
+        session(['flash_message' => '登録が完了しました。。']);
     }
 
     public function edit(WatchList $watch_list)
@@ -172,6 +168,7 @@ class WatchlistController extends Controller
 
         $watch_list->delete();
 
-        return redirect()->route('watch_list.index')->with('flash_message', '登録を削除しました。');
+        session(['flash_message' => '登録を削除しました。']);
+
     }
 }
