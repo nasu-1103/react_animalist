@@ -15,20 +15,20 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     const [flashMessage, setFlashMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('')
 
-    // Laravel APIからウォッチリストのデータを取得
-    useEffect(() => {
-        // データーを取得するためのAPIリクエスト
-        fetch('/api/watch_lists')
-            .then(response => response.json())
-            .then(data => {
-                setAnimeGroups(data);
-                setFlashMessage('登録が完了しました。');
-            })
-            .catch(error => {
-                console.error('データ取得エラー:', error);
-                setErrorMessage('不正なアクセスです。');
-            });
-    }, []);
+    // // Laravel APIからウォッチリストのデータを取得
+    // useEffect(() => {
+    //     // データーを取得するためのAPIリクエスト
+    //     fetch('/api/watch_lists')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setAnimeGroups(data);
+    //             setFlashMessage('登録が完了しました。');
+    //         })
+    //         .catch(error => {
+    //             console.error('データ取得エラー:', error);
+    //             setErrorMessage('不正なアクセスです。');
+    //         });
+    // }, []);
 
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
@@ -88,7 +88,7 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     function changeStatus(event) {
         const anime_id = event.target.dataset.id;
         const status = event.target.value;
-        post(route('watch_list.store', { " anime_id": anime_id, "status": status }));
+        post(route('watch_list.store', { "anime_id": anime_id, "status": status }));
         setFlashMessage('登録を編集しました。');
     }
     // 一時的に固定値を設定
