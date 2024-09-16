@@ -37,7 +37,8 @@ class RegisteredUserController extends Controller
         ],[
             'name.max' => '名前は最大255文字までです。',
             'email.required' => 'メールアドレスは必須です。',
-            'password.confirmd' => 'パスワードが一致しません。'
+            'password.required' => 'パスワードは8文字以上で入力してください。',
+            'password.confirmd' => 'パスワードが一致しません。',
         ]);
 
         $user = User::create([
