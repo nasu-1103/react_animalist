@@ -59,18 +59,18 @@ class WatchlistAPIController extends Controller
         // アニメIDに関連するウォッチリストのエピソードを取得
         $watchlists = WatchList::where('anime_id', $animeId)->get();
 
-        // ウォッチリスト内のエピソードに、未視聴または視聴中があるかチェック
+        // ウォッチリスト内に視聴済みでないエピソードがあるかチェック
         $hasUnwatchedOrWatching = $watchlists->contains(function ($watchlist) {
             return $watchlist->status != 1;
         });
 
         // 👑を表示するかの条件を設定
         if ($hasUnwatchedOrWatching) {
-            // 未視聴または視聴中のエピソードがある場合、👑は表示しない
-            return response()->json(['👑' => false]);
+            // 未視聴または視聴中のエピソードがある場合、👑を表示しない
+            return response()->json(['👑' => 0]);
         } else {
             // 全てのエピソードが視聴済みの場合、👑を表示
-            return response()->json(['👑' => true]);
+            return response()->json(['👑' => 1]);
         }
     }
 }
