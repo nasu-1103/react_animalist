@@ -15,21 +15,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     const [flashMessage, setFlashMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('')
 
-    // // Laravel APIからウォッチリストのデータを取得
-    // useEffect(() => {
-    //     // データーを取得するためのAPIリクエスト
-    //     fetch('/api/watch_lists')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setAnimeGroups(data);
-    //             setFlashMessage('登録が完了しました。');
-    //         })
-    //         .catch(error => {
-    //             console.error('データ取得エラー:', error);
-    //             setErrorMessage('不正なアクセスです。');
-    //         });
-    // }, []);
-
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
         animeGroup => animeGroup.name.includes(data.keyword) ||
@@ -39,7 +24,14 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     // 一致したアニメグループのリストを作成
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
-            <p className='text-2xl'>{animeGroup.name}</p>
+            <div class="flex">
+                <p className='text-2xl'>{animeGroup.name}</p>
+                {/* 全てのアニメが視聴済みなら、👑を表示 */}
+                {animeGroup.animes_count == animeGroup.watchList_count &&
+                    <p className="text-2xl ml-2">👑</p>
+                }
+            </div>
+
             <hr />
             <p>
                 <table className="w-full text-gray-700 text-nowrap">
@@ -58,16 +50,16 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                                 <tr className="text-center">
                                     <td className="border border-slate-300 px-6 py-4">{anime.episode + '話'}</td>
                                     <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
-                                    <td className="border border-slate-300 px-6 py-4">{anime.watchlists[0]?.created_at}</td>
+                                    <td className="border border-slate-300 px-6 py-4">{anime.watchlists?.created_at}</td>
                                     <td className="border border-slate-300 px-6 py-4">
                                         <select onChange={changeStatus} data-id={anime.id}>
                                             <option value="-1" selected>未視聴</option>
-                                            <option value="2" selected={anime.watchlists[0]?.status == 2}>視聴中</option>
-                                            <option value="1" selected={anime.watchlists[0]?.status == 1}>視聴済み</option>
+                                            <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
+                                            <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
                                         </select>
                                     </td>
                                     <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists[0]?.id}>削除</button>
+                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
                                     </td>
                                 </tr>
                             </>

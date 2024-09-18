@@ -69,9 +69,20 @@ class WatchlistController extends Controller
                 'hiddenLists',
             ]
         )
+            ->withCount('animes')
             ->doesntHave('hiddenLists')
             // ->paginate(15);
             ->get();
+
+            foreach ($anime_group_lists as $anime_group) {
+                foreach ($anime_group->animes as $anime) {
+                    // アニメが視聴済みかどうかをチェック
+                    if ($anime->watchlists?->status == 1) {
+                        // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
+                        $anime_group->watchList_count += 1;
+                    };
+                }
+            }
 
         return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
     }
@@ -169,6 +180,5 @@ class WatchlistController extends Controller
         $watch_list->delete();
 
         session(['flash_message' => '登録を削除しました。']);
-
     }
 }
