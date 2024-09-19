@@ -83,31 +83,8 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
         post(route('watch_list.store', { "anime_id": anime_id, "status": status }));
         setFlashMessage('登録を編集しました。');
     }
-    // 一時的に固定値を設定
-    const animeGroupList = [
-        {
-            id: 1,
-            name: '僕のヒーローアカデミア',
-            animes: [
-                {
-                    id: 1,
-                    episode: 1,
-                    sub_title: '緑谷出久 : オリジン',
-                    watchlists: [
-                        {
-                            id: 1,
-                            anime_id: 1,
-                            user_id: 1,
-                            status: 1,
-                            created_at: '2024-09-02 08:42:52',
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
 
-    const [keyword, setKeyword] = useState('');
+    // const [keyword, setKeyword] = useState(''); // TODO:ほどほどに動いたら後で消す
 
     return (
         <AuthenticatedLayout
@@ -123,20 +100,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                             value={data.keyword}
                             onChange={(e) => setData('keyword', e.target.value)}
                         />
-                        {/* <button type="submit" className="btn btn-outline btn-info ml-3 mt-1">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="size-6"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </button> */}
                     </div>
                 </form>
             }
@@ -147,7 +110,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
                         <div className="mr-1 mt-3 mb-4">
-                            {/* <Link href="#" className="btn btn-link text-lg">新規登録</Link> */}
 
                             {/* フラッシュメッセージを表示 */}
                             {flashMessage && <div className="mb-4 text-gray-700">{flashMessage}</div>}
