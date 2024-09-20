@@ -25,10 +25,19 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
+            {/* 動作確認用メールアドレスとパスワード */}
+            <div className="space-y-2 font-medium text-red-500">
+                <p>動作確認用</p>
+                <p>adminメールアドレス : admin@admin.com</p>
+                <p>adminパスワード : admin123</p>
+                <p>ユーザーメールアドレス : test@test.com</p>
+                <p>ユーザーメールパスワード : nasu1234</p>
+            </div>
+
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
             <form onSubmit={submit}>
-                <div>
+                <div className="mt-3 mb-3">
                     <InputLabel htmlFor="email" value="メールアドレス" />
 
                     <TextInput
