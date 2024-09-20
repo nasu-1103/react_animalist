@@ -38,17 +38,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('watchlists/{watch_list}', [WatchlistController::class, 'destroy'])->name('watch_list.destroy');
 
     Route::middleware(['can:admin'])->group(function () {
-        // Route::get('anime_groups/index', [AnimeGroupController::class, 'index'])->name('anime_groups.index');
-        // Route::get('anime_groups/create', [AnimeGroupController::class, 'create'])->name('anime_groups.create');
-        // Route::get('anime_groups_/annict_search', [AnimeGroupController::class, 'annict_search'])->name('anime_groups.annict_search');
-        // Route::get('anime_groups/annict_list', [AnimeGroupController::class, 'annict_list'])->name('anime_groups.annict_list');
-        // Route::post('anime_groups/store', [AnimeGroupController::class, 'store'])->name('anime_groups.store');
-        // Route::post('anime_groups/annict_store', [AnimeGroupController::class, 'annict_store'])->name('anime_groups.annict_store');
-        // Route::get('anime_groups/edit/{animeGroup}', [AnimeGroupController::class, 'edit'])->name('anime_groups.edit');
-        // Route::get('anime_groups/{animeGroup}', [AnimeGroupController::class, 'show'])->name('anime_groups.show');
-        // Route::patch('anime_groups/{animeGroup}', [AnimeGroupController::class, 'update'])->name('anime_groups.update');
-        // Route::delete('anime_groups/{animeGroup}', [AnimeGroupController::class, 'destroy'])->name('anime_groups.destroy');
-
         Route::delete('/animes/{anime}', [AnimeController::class, 'destroy'])->name('animes.destroy');
     });
 });
