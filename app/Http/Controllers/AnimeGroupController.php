@@ -164,36 +164,4 @@ class AnimeGroupController extends Controller
 
         return redirect()->route('anime_groups.index')->with('flash_message', '登録を削除しました。');
     }
-
-    public function setting()
-    {
-        // 全てのアニメグループを取得
-        $animeGroups = AnimeGroup::all();
-        // ログインしているユーザーの隠しリストを取得
-        $localUserHiddenLists = UserHiddenList::whereUserId(Auth::user()->id)->select('anime_group_id')->get();
-        $userHiddenLists = [];
-        foreach ($localUserHiddenLists as $localUserHiddenList) {
-            $userHiddenLists[] = $localUserHiddenList->anime_group_id;
-        }
-
-        return view('watch_lists.setting', compact('animeGroups', 'userHiddenLists'));
-    }
-
-    public function settingAdd(Request $request)
-    {
-        UserHiddenList::create([
-            'anime_group_id' => $request->anime_group_id,
-            'user_id' => Auth::user()->id
-        ]);
-
-        return redirect()->route('watch_list.index')->with('flash_message', 'リストを登録しました。');
-    }
-
-    public function settingDelete(Request $request)
-    {
-        // ユーザーの隠しリストからアニメグループを削除
-        UserHiddenList::whereAnimeGroupId($request->anime_group_id)->whereUserId(Auth::user()->id)->delete();
-
-        return redirect()->route('watch_list.index')->with('flash_message', 'リストを削除しました。');
-    }
 }

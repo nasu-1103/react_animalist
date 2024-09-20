@@ -87,34 +87,6 @@ class WatchlistController extends Controller
         return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
     }
 
-    public function selectAnimeGroup()
-    {
-        // 全てのアニメグループを取得
-        $animeGroups = AnimeGroup::all();
-        // ログインしているユーザーの隠しリストを取得
-        $localUserHiddenLists = UserHiddenList::whereUserId(Auth::user()->id)->select('anime_group_id')->get();
-        $userHiddenLists = [];
-        foreach ($localUserHiddenLists as $localUserHiddenList) {
-            $userHiddenLists[] = $localUserHiddenList->anime_group_id;
-        }
-
-        return view('watch_lists.select_anime', compact('animeGroups', 'userHiddenLists'));
-    }
-
-    public function create(Request $request)
-    {
-        // ログインしているユーザーのIDを取得し、アニメIDとメモを取得
-        $watch_lists_notes = WatchList::whereUserId(Auth::user()->id)->pluck('notes', 'anime_id');
-        $animes = Anime::whereAnimeGroupId($request->animeGroupId)->get();
-        $watch_lists = WatchList::whereUserId(Auth::user()->id)->pluck('anime_id')->toArray();
-        // ログインしているユーザーの視聴済みのステータスのアニメIDを取得
-        $watch_lists_comp = WatchList::whereUserId(Auth::user()->id)->whereStatus(1)->pluck('anime_id')->toArray();
-        // ログインしているユーザーの視聴中のステータスのアニメIDを取得
-        $watch_lists_in = WatchList::whereUserId(Auth::user()->id)->whereStatus(2)->pluck('anime_id')->toArray();
-
-        return view('watch_lists.create', compact('animes', 'watch_lists', 'watch_lists_comp', 'watch_lists_in', 'watch_lists_notes'));
-    }
-
     public function store($anime_id, $status)
     {
         // ステータスが1または2の場合、ユーザーIDとアニメIDが一致するウォッチリストを取得
@@ -134,40 +106,6 @@ class WatchlistController extends Controller
             ]);
         }
         session(['flash_message' => '登録が完了しました。。']);
-    }
-
-    public function edit(WatchList $watch_list)
-    {
-        // ウォッチリストが現在ログイン中のユーザーでない場合、リダイレクト
-        if ($watch_list->user_id !== Auth::id()) {
-            return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
-        }
-
-        $animes = Anime::all();
-
-        return Inertia::render('watch_lists/Edit');
-    }
-
-    public function update(Request $request, Watchlist $watch_list)
-    {
-        // ウォッチリストが現在ログイン中のユーザーでない場合、リダイレクト
-        if ($watch_list->user_id !== Auth::id()) {
-            return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
-        }
-
-        $request->validate([
-            'anime_id' => 'required',
-        ]);
-
-        // 既にウォッチリストに登録されているアニメの場合はエラーメッセージを返す
-        if (WatchList::whereAnime_id($request->anime_id)->whereUser_id(Auth::user()->id)->get()->count() >= 1) {
-            return back()->withInput()->withErrors('すでに登録されています。');
-        };
-
-        $watch_list->anime_id = $request->anime_id;
-        $watch_list->save();
-
-        return redirect()->route('watch_list.index')->with('flash_message', '登録を編集しました。');
     }
 
     public function destroy(Watchlist $watch_list)

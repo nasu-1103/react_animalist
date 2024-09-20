@@ -33,16 +33,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::get('anime_groups/setting', [AnimeGroupController::class, 'setting'])->name('anime_groups.setting');
-    // Route::post('anime_groups/setting/add', [AnimeGroupController::class, 'settingAdd'])->name('anime_groups.setting.add');
-    // Route::delete('anime_groups/setting/add', [AnimeGroupController::class, 'settingDelete'])->name('anime_groups.setting.delete');
-
     Route::get('/watchlists/index', [WatchlistController::class, 'index'])->name('watch_list.index');
-    // Route::get('watchlists/selectAnime', [WatchlistController::class, 'selectAnimeGroup'])->name('watch_list.selectAnimeGroup');
-    // Route::get('watchlists/create', [WatchlistController::class, 'create'])->name('watch_list.create');
     Route::post('/watchlists/store/{anime_id}/{status}', [WatchlistController::class, 'store'])->name('watch_list.store');
-    // Route::get('watchlists/edit/{watch_list}', [WatchlistController::class, 'edit'])->name('watch_list.edit');
-    // Route::patch('watchlists/{watch_list}', [WatchlistController::class, 'update'])->name('watch_list.update');
     Route::delete('watchlists/{watch_list}', [WatchlistController::class, 'destroy'])->name('watch_list.destroy');
 
     Route::middleware(['can:admin'])->group(function () {
@@ -57,15 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::patch('anime_groups/{animeGroup}', [AnimeGroupController::class, 'update'])->name('anime_groups.update');
         // Route::delete('anime_groups/{animeGroup}', [AnimeGroupController::class, 'destroy'])->name('anime_groups.destroy');
 
-        // Route::get('/animes/index', [AnimeController::class, 'index'])->name('animes.index');
-        // Route::get('animes/create', [AnimeController::class, 'create'])->name('animes.create');
-        // Route::get('animes/annict_search', [AnimeController::class, 'annict_search'])->name('animes.annict_search');
-        // Route::get('animes/annict_list', [AnimeController::class, 'annict_list'])->name('animes.annict_list');
-        // Route::post('/animes/store', [AnimeController::class, 'store'])->name('animes.store');
-        // Route::post('animes/annict_store', [AnimeController::class, 'annict_store'])->name('animes.annict_store');
-        // Route::get('/animes/edit/{anime}', [AnimeController::class, 'edit'])->name('animes.edit');
-        // Route::get('/animes/{anime}', [AnimeController::class, 'show'])->name('animes.show');
-        // Route::patch('/animes/{anime}', [AnimeController::class, 'update'])->name('animes.update');
         Route::delete('/animes/{anime}', [AnimeController::class, 'destroy'])->name('animes.destroy');
     });
 });
