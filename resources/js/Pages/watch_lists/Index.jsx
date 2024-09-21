@@ -24,6 +24,7 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     // 一致したアニメグループのリストを作成
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
+            {/* アニメグループの情報を表示 */}
             <div class="flex">
                 <p className='text-2xl'>{animeGroup.name}</p>
                 {/* 全てのアニメが視聴済みなら、👑を表示 */}
@@ -33,40 +34,37 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
             </div>
 
             <hr />
-            <p>
-                <table className="w-full text-gray-700 text-nowrap">
-                    <thead>
-                        <tr>
-                            <th className="mt-4 w-24">話数</th>
-                            <th className="mt-4 w-72">サブタイトル</th>
-                            <th className="mt-4 w-48">視聴日</th>
-                            <th className="mt-4 w-16">ステータス</th>
-                            <th className="mt-4 w-36">エディット</th>
+
+            <table className="w-full text-gray-700 text-nowrap">
+                <thead>
+                    <tr>
+                        <th className="mt-4 w-24">話数</th>
+                        <th className="mt-4 w-72">サブタイトル</th>
+                        <th className="mt-4 w-48">視聴日</th>
+                        <th className="mt-4 w-16">ステータス</th>
+                        <th className="mt-4 w-36">エディット</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {animeGroup.animes.map(anime =>
+                        <tr key={anime.id} className="text-center">
+                            <td className="border border-slate-300 px-6 py-4">{anime.episode}話</td>
+                            <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
+                            <td className="border border-slate-300 px-6 py-4">{anime.watchlists.created_at}</td>
+                            <td className="border border-slate-300 px-6 py-4">
+                                <select onChange={changeStatus} data-id={anime.id}>
+                                    <option value="-1" selected={!anime.watchlists || anime.watchlists.status === -1}>未視聴</option>
+                                    <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
+                                    <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
+                                </select>
+                            </td>
+                            <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
+                                <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {animeGroup.animes.map(anime =>
-                            <>
-                                <tr className="text-center">
-                                    <td className="border border-slate-300 px-6 py-4">{anime.episode + '話'}</td>
-                                    <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
-                                    <td className="border border-slate-300 px-6 py-4">{anime.watchlists?.created_at}</td>
-                                    <td className="border border-slate-300 px-6 py-4">
-                                        <select onChange={changeStatus} data-id={anime.id}>
-                                            <option value="-1" selected>未視聴</option>
-                                            <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
-                                            <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
-                                        </select>
-                                    </td>
-                                    <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                        <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
-                                    </td>
-                                </tr>
-                            </>
-                        )}
-                    </tbody>
-                </table>
-            </p>
+                    )}
+                </tbody>
+            </table>
         </>
     )
 
