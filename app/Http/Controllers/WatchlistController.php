@@ -71,7 +71,7 @@ class WatchlistController extends Controller
         )
             ->withCount('animes')
             ->doesntHave('hiddenLists')
-            // ->paginate(15);
+            // ->paginate(15); // TODO 削除？
             ->get();
 
             foreach ($anime_group_lists as $anime_group) {
@@ -102,7 +102,7 @@ class WatchlistController extends Controller
                 'anime_id' => $anime_id,
                 'user_id' => Auth::user()->id,
                 'status' => $status,
-                // 'notes' => $request->notes,
+                // 'notes' => $request->notes, // TODO 削除？
             ]);
         }
         session(['flash_message' => '登録が完了しました。。']);
