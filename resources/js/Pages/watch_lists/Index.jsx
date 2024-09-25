@@ -105,8 +105,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
         setFlashMessage('登録を編集しました。');
     }
 
-    // const [keyword, setKeyword] = useState(''); // TODO:ほどほどに動いたら後で消す
-
     return (
         <AuthenticatedLayout
             user={auth.user}
