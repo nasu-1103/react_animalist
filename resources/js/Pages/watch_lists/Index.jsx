@@ -57,12 +57,12 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                         const year = dateObj ? dateObj.getFullYear() : "----";
                         const month = dateObj ? String(dateObj.getMonth() + 1).padStart(2, '0') : "--";
                         const day = dateObj ? String(dateObj.getDate()).padStart(2, '0') : "--";
-                        const hour = dateObj ? String(dateObj.getHours()).padStart(2, '0') : "--";
+                        const hours = dateObj ? String(dateObj.getHours()).padStart(2, '0') : "--";
                         const minutes = dateObj ? String(dateObj.getMinutes()).padStart(2, '0') : "--";
                         const seconds = dateObj ? String(dateObj.getSeconds()).padStart(2, '0') : "--";
 
                         // フォーマットされた日時
-                        const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "日時不明";
+                        const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "";
 
                         return (
                             <tr key={anime.id} className="text-center">
@@ -90,18 +90,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
             </table>
         </>
     );
-    {/* 日付を「YYYY-MM-DD」形式で取得
-                                {anime.watchlists?.created_at &&
-                                    new Date(anime.watchlists?.created_at)
-                                        .toLocaleDateString('ja-JP', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                            </td> */}
-
 
     // ウォッチリストの削除処理
     function deleteWatchList(event) {
