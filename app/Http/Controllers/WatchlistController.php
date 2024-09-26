@@ -17,48 +17,6 @@ class WatchlistController extends Controller
 {
     public function index(Request $request)
     {
-        // アニメのタイトルまたはサブタイトルで検索キーワードを取得
-        $keyword = $request->keyword;
-
-        // アニメのタイトルまたはサブタイトルに該当するキーワードを取得
-        if ($keyword) {
-            $watch_lists = WatchList::whereUserId(Auth::user()->id)
-                ->with('anime')
-                ->whereHas("anime", function ($query) use ($keyword) {
-                    $query->where('sub_title', 'like', "%{$keyword}%");
-                    $query->orWhere('title', 'like', "%{$keyword}%");
-                })
-                ->orderBy('created_at', 'desc')->paginate(15);
-            $watch_lists->appends(['keyword' => $keyword]);
-        } else {
-            // キーワードがない場合は全てのウォッチリストを取得
-            $watch_lists = WatchList::whereUserId(Auth::user()->id)
-                ->orderBy('created_at', 'desc')->paginate(15);
-        }
-
-        // アニメグループの情報を取得
-        $anime = [];
-        $animeGroup = AnimeGroup::with('animes')->find(1);
-        // 指定されたユーザーのウォッチリストに登録されているアニメIDを取得
-        $watch_lists = WatchList::whereUserId(3)->pluck('anime_id')->toArray();
-
-        // アニメグループ内の各アニメに対して、ウォッチリストに登録されているかチェック
-        foreach ($animeGroup->animes ?? [] as $anime) {
-            if (in_array($anime->id, $watch_lists)) {
-                $anime->watch_flg = true;
-            } else {
-                $anime->watch_glg = false;
-            }
-
-            // Annict IDが未登録の場合は、true に設定
-            if (is_null($anime->annict_id)) {
-                $anime->annict_null = true;
-            } else {
-                // Annict Idが登録されている場合は、false に設定
-                $anime->annict_null = false;
-            }
-        }
-
         // アニメグループとログイン中のユーザーのウォッチリストを取得
         $anime_group_lists = AnimeGroup::with(
             [
@@ -71,18 +29,17 @@ class WatchlistController extends Controller
         )
             ->withCount('animes')
             ->doesntHave('hiddenLists')
-            // ->paginate(15); // TODO 削除？
             ->get();
 
-            foreach ($anime_group_lists as $anime_group) {
-                foreach ($anime_group->animes as $anime) {
-                    // アニメが視聴済みかどうかをチェック
-                    if ($anime->watchlists?->status == 1) {
-                        // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
-                        $anime_group->watchList_count += 1;
-                    };
-                }
+        foreach ($anime_group_lists as $anime_group) {
+            foreach ($anime_group->animes as $anime) {
+                // アニメが視聴済みかどうかをチェック
+                if ($anime->watchlists?->status == 1) {
+                    // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
+                    $anime_group->watchList_count += 1;
+                };
             }
+        }
 
         return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
     }
