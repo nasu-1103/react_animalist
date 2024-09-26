@@ -30,7 +30,7 @@ export default function WatchList({ auth, animeGroups }) {
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
             {/* アニメグループの情報を表示 */}
-            <div className="card bg-base-100 mt-6 text-lg">
+            <div className="card bg-base-100 shadow-md mt-6 text-lg">
                 <div className="card-body flex">
                     <div class="flex">
                         <h2 className='card-title'>{animeGroup.name}</h2>
