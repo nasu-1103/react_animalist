@@ -28,7 +28,7 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
             {/* アニメグループの情報を表示 */}
-            <div className="card bg-base-100 shadow-xl mt-6 text-lg">
+            <div className="card bg-base-100 mt-6 text-lg">
                 <div className="card-body flex">
                     <div class="flex">
                         <h2 className='card-title'>{animeGroup.name}</h2>
@@ -136,7 +136,7 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                         <div className="mr-1 mt-3 mb-4">
 
                             {/* フラッシュメッセージを表示 */}
-                            {flashMessage && <div className="mb-4 text-gray-700">{flashMessage}</div>}
+                            {flashMessage && <div className="mb-4 ml-3 text-gray-700 text-md">{flashMessage}</div>}
 
                             {/* エラーメッセージを表示 */}
                             {errorMessage && <div className="mb-4 text-gray-700">{errorMessage}</div>}
@@ -144,15 +144,6 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
 
                         {/* 一致したアニメグループのリストを表示 */}
                         {animeGroupsLists}
-
-                        {animeGroupList.length > 0 ? (
-                            animeGroupList.map((animeGroup) => (
-                                <div key={animeGroup.id} className="text-gray-900">
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-center">投稿はありません。</p>
-                        )}
                     </div>
                 </div>
             </div>
