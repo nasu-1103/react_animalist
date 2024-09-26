@@ -1,9 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import InputError from '@/Components/InputError';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
-export default function WatchList({ auth, animeGroups, flash_message = null, error_message = null }) {
-    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
+export default function WatchList({ auth, animeGroups }) {
+    const { data, setData, post, delete: destroy, errors, recentlySuccessful } = useForm({
         // 検索キーワードの初期値を設定
         'keyword': ''
     });
@@ -21,7 +22,8 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
         animeGroup => animeGroup.name.includes(data.keyword) ||
-            animeGroup.animes.map(anime => anime.sub_title).includes(data.keyword)
+        // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
+            animeGroup.animes.map(anime => anime.sub_title).find(subTitle => subTitle.indexOf(data.keyword) !== -1)
     );
 
     // 一致したアニメグループのリストを作成
@@ -136,10 +138,10 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                         <div className="mr-1 mt-3 mb-4">
 
                             {/* フラッシュメッセージを表示 */}
-                            {recentlySuccessful && <div className="mb-4 ml-3 text-gray-700 text-md">{flashMessage}</div>}
+                            {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
                             {/* エラーメッセージを表示 */}
-                            {errorMessage && <div className="mb-4 text-gray-700">{errorMessage}</div>}
+                            {InputError && <div className="mb-4 text-gray-700">{errorMessage}</div>}
                         </div>
 
                         {/* 一致したアニメグループのリストを表示 */}
