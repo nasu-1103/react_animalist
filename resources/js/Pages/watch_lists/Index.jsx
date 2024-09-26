@@ -3,7 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
 export default function WatchList({ auth, animeGroups, flash_message = null, error_message = null }) {
-    const { data, setData, post, delete: destroy } = useForm({
+    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
         // 検索キーワードの初期値を設定
         'keyword': ''
     });
@@ -136,7 +136,7 @@ export default function WatchList({ auth, animeGroups, flash_message = null, err
                         <div className="mr-1 mt-3 mb-4">
 
                             {/* フラッシュメッセージを表示 */}
-                            {flashMessage && <div className="mb-4 ml-3 text-gray-700 text-md">{flashMessage}</div>}
+                            {recentlySuccessful && <div className="mb-4 ml-3 text-gray-700 text-md">{flashMessage}</div>}
 
                             {/* エラーメッセージを表示 */}
                             {errorMessage && <div className="mb-4 text-gray-700">{errorMessage}</div>}
