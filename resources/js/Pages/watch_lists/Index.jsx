@@ -1,5 +1,4 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import InputError from '@/Components/InputError';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
@@ -144,7 +143,7 @@ export default function WatchList({ auth, animeGroups }) {
                         {/* 一致したアニメグループのリストを表示 */}
                         {animeGroupsLists}
 
-                        {/* アニメグループリストにデータがない場合に表示する */}
+                        {/* アニメグループリストにデータがなくても罫線を引く */}
                         {animeGroupsLists.length !== 0 ?
                             animeGroupsLists :
                             <p className="text-center">投稿はありません。</p>
