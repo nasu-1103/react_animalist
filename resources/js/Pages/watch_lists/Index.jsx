@@ -22,8 +22,8 @@ export default function WatchList({ auth, animeGroups }) {
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
         animeGroup => animeGroup.name.includes(data.keyword) ||
-        // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
-            animeGroup.animes.map(anime => anime.sub_title).find(subTitle => subTitle.indexOf(data.keyword) !== -1)
+            // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
+            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1 ? true : false).includes(true) ? true : false
     );
 
     // 一致したアニメグループのリストを作成
@@ -39,7 +39,7 @@ export default function WatchList({ auth, animeGroups }) {
                             <span className="text-2xl ml-2">👑</span>
                         }
                     </div>
-                    <table className="w-full text-gray-700 text-nowrap">
+                    <table className="w-full text-gray-700 text-center">
                         <thead>
                             <tr>
                                 <th className="mt-4 w-24">話数</th>
@@ -70,7 +70,7 @@ export default function WatchList({ auth, animeGroups }) {
                                 const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "";
 
                                 return (
-                                    <tr key={anime.id} className="text-center">
+                                    <tr key={anime.id} className="w-full text-center">
                                         <td className="border border-slate-300 px-6 py-4">{anime.episode}話</td>
                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                         <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
@@ -146,6 +146,12 @@ export default function WatchList({ auth, animeGroups }) {
 
                         {/* 一致したアニメグループのリストを表示 */}
                         {animeGroupsLists}
+
+                        {/* アニメグループリストにデータがない場合に表示する */}
+                        {animeGroupsLists.length !== 0 ?
+                            animeGroupsLists :
+                            <p className="text-center">投稿はありません。</p>
+                        }
                     </div>
                 </div>
             </div>
