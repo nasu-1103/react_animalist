@@ -7,15 +7,12 @@ use App\Models\UserHiddenList;
 use App\Models\WatchList;
 use App\Models\Anime;
 use App\Models\AnimeGroup;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class WatchlistController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         // アニメグループとログイン中のユーザーのウォッチリストを取得
         $anime_group_lists = AnimeGroup::with(
@@ -62,7 +59,6 @@ class WatchlistController extends Controller
                 // 'notes' => $request->notes, // TODO 削除？
             ]);
         }
-        session(['flash_message' => '登録が完了しました。。']);
     }
 
     public function destroy(Watchlist $watch_list)
@@ -73,7 +69,5 @@ class WatchlistController extends Controller
         }
 
         $watch_list->delete();
-
-        session(['flash_message' => '登録を削除しました。']);
     }
 }
