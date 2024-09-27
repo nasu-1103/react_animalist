@@ -4,7 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
 export default function WatchList({ auth, animeGroups }) {
-    const { data, setData, post, delete: destroy, errors, recentlySuccessful } = useForm({
+    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
         // 検索キーワードの初期値を設定
         'keyword': ''
     });
@@ -12,9 +12,8 @@ export default function WatchList({ auth, animeGroups }) {
     // ウォッチリストのデータを保存する
     const [animeGropus, setAnimeGroups] = useState([]);
 
-    // フラッシュメッセージとエラーメッセージを設定
+    // フラッシュメッセージの設定
     const [flashMessage, setFlashMessage] = useState('');
-    const [errorMessage, setErrorMessage] = useState('')
 
     // アニメグループリストの設定
     const animeGroupList = [];
@@ -39,7 +38,7 @@ export default function WatchList({ auth, animeGroups }) {
                             <span className="text-2xl ml-2">👑</span>
                         }
                     </div>
-                    <table className="w-full text-gray-700 text-center">
+                    <table className="w-full text-gray-700 text-center text-nowrap">
                         <thead>
                             <tr>
                                 <th className="mt-4 w-24">話数</th>
@@ -140,8 +139,6 @@ export default function WatchList({ auth, animeGroups }) {
                             {/* フラッシュメッセージを表示 */}
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
-                            {/* エラーメッセージを表示 */}
-                            {InputError && <div className="mb-4 text-gray-700">{errorMessage}</div>}
                         </div>
 
                         {/* 一致したアニメグループのリストを表示 */}
