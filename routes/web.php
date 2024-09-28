@@ -1,11 +1,7 @@
 <?php
 
-use App\Models\Anime;
-use App\Models\WatchList;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AnimeController;
 use App\Http\Controllers\WatchlistController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,8 +31,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/watchlists/index', [WatchlistController::class, 'index'])->name('watch_list.index');
     Route::post('/watchlists/store/{anime_id}/{status}', [WatchlistController::class, 'store'])->name('watch_list.store');
     Route::delete('watchlists/{watch_list}', [WatchlistController::class, 'destroy'])->name('watch_list.destroy');
-
-    Route::middleware(['can:admin'])->group(function () {
-        Route::delete('/animes/{anime}', [AnimeController::class, 'destroy'])->name('animes.destroy');
-    });
 });
