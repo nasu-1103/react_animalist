@@ -26,6 +26,7 @@ class WatchlistController extends Controller
         )
             ->withCount('animes')
             ->doesntHave('hiddenLists')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         foreach ($anime_group_lists as $anime_group) {
