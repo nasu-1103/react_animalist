@@ -143,7 +143,7 @@ export default function WatchList({ auth, animeGroups }) {
                         {/* 一致したアニメグループのリストを表示 */}
                         {animeGroupsLists}
 
-                        {/* アニメグループリストにデータがなくても罫線を引く */}
+                        {/* アニメグループリストにデータがない場合に表示する */}
                         {animeGroupsLists.length !== 0 ?
                             animeGroupsLists :
                             <p className="text-center">投稿はありません。</p>
