@@ -5,3 +5,7 @@
 #scrollbar {
     scrollbar-color: rgba(209, 213, 219) white;
 }
+
+#scrollbar:active {
+    scrollbar-color: rgba(229, 231, 235) white;
+}
