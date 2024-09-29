@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function WatchList({ auth, animeGroups }) {
     const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
@@ -145,9 +145,6 @@ export default function WatchList({ auth, animeGroups }) {
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
                         </div>
-
-                        {/* 一致したアニメグループのリストを表示 */}
-                        {/* {animeGroupsLists} */}
 
                         {/* アニメグループリストにデータがない場合に表示する */}
                         {animeGroupsLists.length !== 0 ?
