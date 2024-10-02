@@ -57,7 +57,7 @@ class WatchlistController extends Controller
                 'anime_id' => $anime_id,
                 'user_id' => Auth::user()->id,
                 'status' => $status,
-                // 'notes' => $request->notes, // TODO 削除？
+                'notes' => $notes,
             ]);
         }
     }

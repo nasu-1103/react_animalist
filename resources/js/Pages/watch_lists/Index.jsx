@@ -76,11 +76,20 @@ export default function WatchList({ auth, animeGroups }) {
                                                     <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                     <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                     <td className="border border-slate-300 px-6 py-4">
-                                                        <select onChange={changeStatus} data-id={anime.id} className='rounded-xl'>
+                                                        <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl'>
                                                             <option value="-1" selected={!anime.watchlists || anime.watchlists.status === -1}>未視聴</option>
                                                             <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
                                                             <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
                                                         </select>
+                                                        <textarea
+                                                            name="note"
+                                                            id={`notes-${anime.id}`}
+                                                            rows="1"
+                                                            cols="25"
+                                                            placeholder="メモ"
+                                                            className="ml-6 rounded-xl xl:inline-block"
+                                                            value={anime.watchlists?.note ?? ''}>
+                                                        </textarea>
                                                     </td>
                                                     <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
                                                         <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>
