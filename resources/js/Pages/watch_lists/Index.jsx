@@ -35,7 +35,7 @@ export default function WatchList({ auth, animeGroups }) {
                             <h2 className='card-title'>{animeGroup.name}</h2>
                             {/* 全てのアニメが視聴済みの場合、👑を表示 */}
                             {animeGroup.animes_count == animeGroup.watchList_count &&
-                                <span className="text-3xl ml-2">👑</span>
+                                <span className="text-3xl ml-2 mb-2">👑</span>
                             }
                         </div>
                         <div className="anime_group">
