@@ -42,7 +42,7 @@ class WatchlistController extends Controller
         return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
     }
 
-    public function store($anime_id, $status)
+    public function store($anime_id, $status, $note = null)
     {
         // ステータスが1または2の場合、ユーザーIDとアニメIDが一致するウォッチリストを取得
         if ($status === "1" || $status === "2") {
@@ -57,7 +57,7 @@ class WatchlistController extends Controller
                 'anime_id' => $anime_id,
                 'user_id' => Auth::user()->id,
                 'status' => $status,
-                'notes' => $notes,
+                'notes' => $note,
             ]);
         }
     }
