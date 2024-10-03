@@ -76,7 +76,7 @@ export default function WatchList({ auth, animeGroups }) {
                                                     <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                     <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                     <td className="border border-slate-300 px-6 py-4">
-                                                        <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl'>
+                                                        <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl mt-2'>
                                                             <option value="-1" selected={!anime.watchlists || anime.watchlists.status === -1}>未視聴</option>
                                                             <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
                                                             <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
@@ -85,9 +85,9 @@ export default function WatchList({ auth, animeGroups }) {
                                                             name="note"
                                                             id={`notes-${anime.id}`}
                                                             rows="1"
-                                                            cols="25"
+                                                            cols="12"
                                                             placeholder="メモ"
-                                                            className="ml-6 rounded-xl xl:inline-block"
+                                                            className="ml-6 rounded-xl xl:inline-block mt-2"
                                                             value={anime.watchlists?.note ?? ''}>
                                                         </textarea>
                                                     </td>
