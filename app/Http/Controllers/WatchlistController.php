@@ -24,8 +24,8 @@ class WatchlistController extends Controller
                 'hiddenLists',
             ]
         )
-            ->withCount('animes')
-            ->doesntHave('hiddenLists')
+            ->withCount('animes') // 各アニメグループに含まれるアニメの数を取得
+            ->doesntHave('hiddenLists') // 非表示リストに含まれていないアニメグループのみ取得
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -64,7 +64,7 @@ class WatchlistController extends Controller
 
     public function destroy(Watchlist $watch_list)
     {
-        // ウォッチリストが現在ログイン中のユーザーでない場合、リダイレクト
+        // ログイン中のユーザーでない場合、リダイレクト
         if ($watch_list->user_id !== Auth::id()) {
             return redirect()->route('watch_list.index')->with('error_message', '不正なアクセスです。');
         }
