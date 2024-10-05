@@ -24,8 +24,9 @@ class WatchlistController extends Controller
                 'hiddenLists',
             ]
         )
-            ->withCount('animes') // 各アニメグループに含まれるアニメの数を取得
-            ->doesntHave('hiddenLists') // 非表示リストに含まれていないアニメグループのみ取得
+            // アニメカウントを取得し、非表示リストに含まれていないアニメグループを取得
+            ->withCount('animes')
+            ->doesntHave('hiddenLists')
             ->orderBy('created_at', 'desc')
             ->get();
 
