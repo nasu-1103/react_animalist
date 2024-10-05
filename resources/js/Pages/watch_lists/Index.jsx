@@ -1,8 +1,9 @@
+import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function WatchList({ auth, animeGroups }) {
+export default function WatchList({ auth, animeGroups, hiddenLists }) {
     const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
         // 検索キーワードの初期値を設定
         'keyword': ''
@@ -170,7 +171,29 @@ export default function WatchList({ auth, animeGroups }) {
 
                         </div>
 
-                        {/* アニメグループリストにデータがない場合に表示する */}
+                        <Dropdown>
+                            <Dropdown.Trigger>
+                                <div className="text-end">
+                                    {'・・・'}
+                                </div>
+                            </Dropdown.Trigger>
+                            <Dropdown.Content>
+                                {
+                                    // 非表示リストに対応するリンクを表示
+                                    hiddenLists.map(hiddenList =>
+                                        <Dropdown.Link
+                                            href={route('watch_list.deleteHiddenList', hiddenList.anime_group.id)}
+                                            method="post"
+                                        >
+                                            {/* アニメグループの名前を表示 */}
+                                            {hiddenList.anime_group.name}
+                                        </Dropdown.Link>
+                                    )
+                                }
+                            </Dropdown.Content>
+                        </Dropdown>
+
+                        {/* アニメグループリストにデータがない場合に表示 */}
                         {animeGroupsLists.length !== 0 ?
                             animeGroupsLists :
                             <p className="text-center">投稿はありません。</p>

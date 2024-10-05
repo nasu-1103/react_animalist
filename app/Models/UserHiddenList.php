@@ -10,4 +10,9 @@ class UserHiddenList extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'anime_group_id'];
+
+    public function animeGroup()
+    {
+        return $this->belongsTo(AnimeGroup::class);
+    }
 }

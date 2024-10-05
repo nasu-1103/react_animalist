@@ -31,5 +31,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/watchlists/index', [WatchlistController::class, 'index'])->name('watch_list.index');
     Route::post('/watchlists/store/{anime_id}/{status}/{note?}', [WatchlistController::class, 'store'])->name('watch_list.store');
     Route::delete('watchlists/{watch_list}', [WatchlistController::class, 'destroy'])->name('watch_list.destroy');
-    Route::post('/watchlists/addHiddenList/{anime_group_id}', [WatchlistController::class, 'addHiddenList']) ->name('watch_list.addHiddenList');
+    Route::post('/watchlists/addHiddenList/{anime_group_id}', [WatchlistController::class, 'addHiddenList'])->name('watch_list.addHiddenList');
+    Route::post('/watchlists/deleteHiddenList/{anime_group_id}', [WatchlistController::class, 'deleteHiddenList'])->name('watch_list.deleteHiddenList');
 });

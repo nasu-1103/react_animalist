@@ -44,7 +44,15 @@ class WatchlistController extends Controller
             }
         }
 
-        return Inertia::render('watch_lists/Index', ['animeGroups' => $anime_group_lists]);
+        // ログイン中のユーザーの非表示リストと関連するアニメグループを取得
+        $hiddenLists = UserHiddenList::where('user_id', Auth::user()->id)
+        ->with('animeGroup')
+        ->get();
+
+        return Inertia::render('watch_lists/Index', [
+            'animeGroups' => $anime_group_lists,
+            'hiddenLists' => $hiddenLists
+        ]);
     }
 
     public function store($anime_id, $status, $note = null)
@@ -84,5 +92,10 @@ class WatchlistController extends Controller
             'user_id' => Auth::user()->id,
             'anime_group_id' => $anime_group_id
         ]);
+    }
+
+    public function deleteHiddenList($anime_group_id)
+    {
+        dd($anime_group_id);
     }
 }
