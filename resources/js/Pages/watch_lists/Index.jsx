@@ -29,9 +29,9 @@ export default function WatchList({ auth, animeGroups }) {
         <>
             {/* アニメグループの情報を表示 */}
             <div className="text-gray-900">
-                <div className="card bg-base-100 shadow-md mt-6 text-lg">
-                    {/* 非表示リストの要素数が1でないかつ、表示する場合 */}
-                    {animeGroup.hidden_lists.length !== 1 &&
+                {/* 非表示リストの要素数が1でないかつ、表示する場合 */}
+                {animeGroup.hidden_lists.length !== 1 &&
+                    <div className="card bg-base-100 shadow-md mt-6 text-lg">
                         <div className="card-body flex">
                             <div class="flex">
                                 <h2 className='card-title'>{animeGroup.name}</h2>
@@ -110,8 +110,8 @@ export default function WatchList({ auth, animeGroups }) {
                                 </div>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </>
     );
