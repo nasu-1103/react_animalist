@@ -14,19 +14,23 @@ class WatchlistController extends Controller
 {
     public function index()
     {
-        // アニメグループとログイン中のユーザーのウォッチリストを取得
+        // アニメグループと関連するデータを取得
         $anime_group_lists = AnimeGroup::with(
             [
+                // アニメグループに含まれるアニメを取得
                 'animes',
                 'animes.watchlists' => function ($query) {
+                    // ログイン中のユーザーのウォッチリストのみ取得
                     return $query->where('user_id', Auth::user()->id);
                 },
-                'hiddenLists',
+                'hiddenLists' => function ($query) {
+                    // ログイン中のユーザーの非表示リストを取得
+                    return $query->where('user_id', Auth::user()->id);
+                }
             ]
         )
-            // アニメカウントを取得し、非表示リストに含まれていないアニメグループを取得
+            // アニメの数をカウントして、アニメグループを降順で表示
             ->withCount('animes')
-            ->doesntHave('hiddenLists')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -71,5 +75,14 @@ class WatchlistController extends Controller
         }
 
         $watch_list->delete();
+    }
+
+    public function addHiddenList($anime_group_id)
+    {
+        // アニメグループをユーザー非表示リストに追加
+        UserHiddenList::create([
+            'user_id' => Auth::user()->id,
+            'anime_group_id' => $anime_group_id
+        ]);
     }
 }
