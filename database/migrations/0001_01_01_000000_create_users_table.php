@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('admin_flg')->nullable()->default(0);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
 
