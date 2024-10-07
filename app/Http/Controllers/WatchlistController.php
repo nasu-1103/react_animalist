@@ -96,6 +96,7 @@ class WatchlistController extends Controller
 
     public function deleteHiddenList($anime_group_id)
     {
-        dd($anime_group_id);
+        // 指定されたアニメグループIDの非表示リストを削除
+        ($anime_group_id);
     }
 }
