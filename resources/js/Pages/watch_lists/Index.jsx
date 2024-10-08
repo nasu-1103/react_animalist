@@ -141,12 +141,21 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
         setFlashMessage('登録を編集しました。');
     }
 
+    // 非表示リストにアニメグループを追加する処理
     function addHiddenList(event) {
         // アニメグループIDを取得
         const anime_group_id = event.target.dataset.animeGroupId;
 
         // アニメグループを非表示リストに追加
         post(route('watch_list.addHiddenList', { "anime_group_id": anime_group_id }));
+    }
+
+    // メモの内容を設定する処理
+    function setNote(event) {
+        // メモの内容を取得
+        const note = event.target.value;
+        // ログイン中のユーザーIDを取得
+        const user_id = auth.user.id;
     }
 
     return (
@@ -177,7 +186,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             {/* フラッシュメッセージを表示 */}
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
-                            {/* <div className="flex">
+                            <div className="flex">
                                 <label
                                     htmlFor="memo"
                                     className="hidden xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white"
@@ -190,14 +199,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                         id="memo"
                                         rows="1"
                                         cols="12"
-                                        placeholder="15:10"
-                                        className="ml-40 rounded-xl"
-                                        onChange={handleChange}
-                                        data-user_id={userId}
+                                        placeholder="例： 15:10"
+                                        className="ml-8 rounded-xl"
+                                        onChange={setNote}
+                                        defaultValue={auth.user.notes}
                                         value={notes}
                                     />
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
 
                         <Dropdown>

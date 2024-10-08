@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\UserHiddenList;
 use App\Models\WatchList;
 use App\Models\Anime;
@@ -46,8 +47,8 @@ class WatchlistController extends Controller
 
         // ログイン中のユーザーの非表示リストと関連するアニメグループを取得
         $hiddenLists = UserHiddenList::where('user_id', Auth::user()->id)
-        ->with('animeGroup')
-        ->get();
+            ->with('animeGroup')
+            ->get();
 
         return Inertia::render('watch_lists/Index', [
             'animeGroups' => $anime_group_lists,
@@ -72,7 +73,18 @@ class WatchlistController extends Controller
                 'status' => $status,
                 'notes' => $note,
             ]);
+            // ウォッチリストが作成されたら結果を返す
+            return ['result' => 'insert'];
+        } else {
+            // ステータスが1または2でない場合は、ウォッチリストを削除
+            WatchList::whereUserId($request->user_id)
+                ->whereAnimeId($request->anime_id)
+                ->delete();
+            // ウォッチリストが削除されたら結果を返す
+            return ['result' => 'delete'];
         }
+        // エラーが発生したらエラーを返す
+        return ['result' => 'error'];
     }
 
     public function destroy(Watchlist $watch_list)
@@ -99,8 +111,8 @@ class WatchlistController extends Controller
         // 指定されたアニメグループIDのレコードを検索
         UserHiddenList::whereAnimeGroupId($anime_group_id)
 
-        // 現在ログイン中のユーザーのレコードを取得
-        ->whereUserId(Auth::user()->id)
-        ->delete();
+            // 現在ログイン中のユーザーのレコードを取得
+            ->whereUserId(Auth::user()->id)
+            ->delete();
     }
 }
