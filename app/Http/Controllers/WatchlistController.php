@@ -96,7 +96,11 @@ class WatchlistController extends Controller
 
     public function deleteHiddenList($anime_group_id)
     {
-        // 指定されたアニメグループIDの非表示リストを削除
-        ($anime_group_id);
+        // 指定されたアニメグループIDのレコードを検索
+        UserHiddenList::whereAnimeGroupId($anime_group_id)
+
+        // 現在ログイン中のユーザーのレコードを取得
+        ->whereUserId(Auth::user()->id)
+        ->delete();
     }
 }

@@ -15,6 +15,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     // フラッシュメッセージの設定
     const [flashMessage, setFlashMessage] = useState('');
 
+    // メモのステータスを管理
+    const [notes, setNotes] = useState('')
+
+    // メモが変更されたときの処理
+    const handleMemoChange = (event) => {
+        setMemo(event.target.value);
+    };
+
     // アニメグループリストの設定
     const animeGroupList = [];
 
@@ -37,11 +45,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             <div class="flex">
                                 <h2 className='card-title'>{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
-                                <span class="text-3xl ml-3" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.499 8.248h15m-15 7.501h15" />
-                                    </svg>
-                                </span>
+                                <span class="text-3xl ml-3" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>-</span>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
                                 {animeGroup.animes_count == animeGroup.watchList_count &&
                                     <span className="text-3xl ml-2 mb-2">👑</span>
@@ -173,14 +177,33 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             {/* フラッシュメッセージを表示 */}
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
+                            {/* <div className="flex">
+                                <label
+                                    htmlFor="memo"
+                                    className="hidden xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white"
+                                >
+                                    視聴中の場合、先に時間を入力してから未視聴に変更してください。
+                                </label>
+                                <div className="tooltip" data-tip="視聴中の場合、先に時間を入力してから未視聴に変更してください。">
+                                    <textarea
+                                        name="memo"
+                                        id="memo"
+                                        rows="1"
+                                        cols="12"
+                                        placeholder="15:10"
+                                        className="ml-40 rounded-xl"
+                                        onChange={handleChange}
+                                        data-user_id={userId}
+                                        value={notes}
+                                    />
+                                </div>
+                            </div> */}
                         </div>
 
                         <Dropdown>
                             <Dropdown.Trigger>
-                                <div className="text-end">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 text-end">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
+                                <div className="text-end text-3xl mr-8">
+                                    {'+'}
                                 </div>
                             </Dropdown.Trigger>
                             <Dropdown.Content>
