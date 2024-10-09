@@ -143,10 +143,10 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
     // 非表示リストにアニメグループを追加する処理
     function addHiddenList(event) {
-        // アニメグループIDを取得
+        // 対象のアニメグループIDを取得
         const anime_group_id = event.target.dataset.animeGroupId;
 
-        // アニメグループを非表示リストに追加
+        // 指定したアニメグループを非表示リストに追加
         post(route('watch_list.addHiddenList', { "anime_group_id": anime_group_id }));
     }
 
@@ -154,8 +154,9 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     function setNote(event) {
         // メモの内容を取得
         const note = event.target.value;
-        // ログイン中のユーザーIDを取得
-        const user_id = auth.user.id;
+        
+        // メモの内容を保存するリクエストを送信
+        post(route('watch_list.setNote', { "note": note }))
     }
 
     return (
@@ -203,7 +204,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                         className="ml-8 rounded-xl"
                                         onChange={setNote}
                                         defaultValue={auth.user.notes}
-                                        value={notes}
                                     />
                                 </div>
                             </div>

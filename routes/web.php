@@ -33,4 +33,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('watchlists/{watch_list}', [WatchlistController::class, 'destroy'])->name('watch_list.destroy');
     Route::post('/watchlists/addHiddenList/{anime_group_id}', [WatchlistController::class, 'addHiddenList'])->name('watch_list.addHiddenList');
     Route::post('/watchlists/deleteHiddenList/{anime_group_id}', [WatchlistController::class, 'deleteHiddenList'])->name('watch_list.deleteHiddenList');
+    Route::post('/watchlists/setNote/{note}', [WatchlistController::class, 'setNote'])->name('watch_list.setNote');
 });
