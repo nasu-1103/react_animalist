@@ -188,7 +188,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             <div className="flex">
                                 <label
                                     htmlFor="memo"
-                                    className="hidden xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white"
+                                    className="xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white"
                                 >
                                     視聴中の場合、先に時間を入力してから未視聴に変更してください。
                                 </label>
