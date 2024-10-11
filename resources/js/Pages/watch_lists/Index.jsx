@@ -1,5 +1,6 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Label } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -167,7 +168,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             type="text"
                             name="keyword"
                             className="ml-4 mt-1 block w-96 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base"
-                            value={data.keyword}
+                            defaultValue={data.keyword}
                             onChange={(e) => setData('keyword', e.target.value)}
                         />
                     </div>
