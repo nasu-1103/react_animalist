@@ -41,7 +41,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             <div className="flex">
                                 <h2 className='card-title'>{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3
+                                 mb-2 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
