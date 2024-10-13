@@ -30,12 +30,13 @@ class WatchlistController extends Controller
                 }
             ]
         )
-            // アニメの数をカウントして、アニメグループを降順で表示
-            ->withCount('animes')
-            ->orderBy('created_at', 'desc')
+            ->withCount('animes') // 各アニメグループに含まれるアニメ数をカウント
+            ->orderBy('created_at', 'desc') // 作成日時の降順で並び替え
             ->get();
 
+        // 取得した各アニメグループに対してループ処理を行う
         foreach ($anime_group_lists as $anime_group) {
+            // アニメグループに含まれる各アニメに対してループ処理を行う
             foreach ($anime_group->animes as $anime) {
                 // アニメが視聴済みかどうかをチェック
                 if ($anime->watchlists?->status == 1) {
