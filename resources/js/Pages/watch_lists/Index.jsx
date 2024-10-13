@@ -42,7 +42,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                 <h2 className='card-title'>{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3
-                                 mb-2 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
+                                 mb-2  mt-2 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
@@ -186,14 +186,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             {/* フラッシュメッセージを表示 */}
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
-                            <div className="flex">
+                            <div className="flex ml-60">
                                 <label
                                     htmlFor="memo"
                                     className="xl:inline-block xl:ml-2 text-lg font-medium text-red-500 dark:text-white"
                                 >
-                                    視聴中の場合、先に時間を入力してから未視聴に変更してください。
+                                    視聴中の場合、先に時間を入力してから視聴中に変更してください。
                                 </label>
-                                <div className="tooltip" data-tip="視聴中の場合、先に時間を入力してから未視聴に変更してください。">
+                                <div className="tooltip" data-tip="視聴中の場合、先に時間を入力してから視聴中に変更してください。">
                                     <textarea
                                         name="memo"
                                         id="memo"
