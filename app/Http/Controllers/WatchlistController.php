@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserHiddenList;
 use App\Models\WatchList;
-use App\Models\Anime;
 use App\Models\AnimeGroup;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
