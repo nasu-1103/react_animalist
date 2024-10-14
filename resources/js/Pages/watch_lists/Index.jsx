@@ -40,6 +40,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     <span className="text-3xl ml-2 mb-2">👑</span>
                                 }
                             </div>
+
                             <div className="anime_group">
                                 <div className="card-actions relative overflow-x-auto shadow-sm sm:rounded-lg text-gray-300 active:text-gray-200">
                                     <table className="w-full text-gray-700 text-center text-nowrap">
@@ -52,6 +53,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                 <th className="mt-4 w-36">エディット</th>
                                             </tr>
                                         </thead>
+                                        
                                         <tbody>
                                             {/* アニメごとにテーブルを作成 */}
                                             {animeGroup.animes.map(anime => {
@@ -206,13 +208,13 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             </Dropdown.Trigger>
                             <Dropdown.Content>
                                 {
-                                    // 非表示リストに対応するリンクを表示
+                                    // 非表示リストのリンクを表示
                                     hiddenLists.map(hiddenList =>
                                         <Dropdown.Link
                                             href={route('watch_list.deleteHiddenList', hiddenList.anime_group.id)}
                                             method="post"
                                         >
-                                            {/* アニメグループの名前を表示 */}
+                                            {/* アニメグループのタイトルを表示 */}
                                             {hiddenList.anime_group.name}
                                         </Dropdown.Link>
                                     )
