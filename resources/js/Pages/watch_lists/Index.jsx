@@ -1,6 +1,5 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Label } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -10,17 +9,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
         'keyword': ''
     });
 
-    // ウォッチリストのデータを保存する
-    const [animeGropus, setAnimeGroups] = useState([]);
-
     // フラッシュメッセージの設定
     const [flashMessage, setFlashMessage] = useState('');
-
-    // メモのステータスを管理
-    const [notes, setNotes] = useState('')
-
-    // アニメグループリストの設定
-    const animeGroupList = [];
 
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
