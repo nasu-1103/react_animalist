@@ -82,9 +82,9 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                         <td className="border border-slate-300 px-6 py-4">
                                                             <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl mt-2'>
                                                                 {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
-                                                                {anime.watchlists == null && <option value="-1">未視聴</option>}
-                                                                <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
-                                                                <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
+                                                                {anime.watchlists == null && <option defaultValue="-1">未視聴</option>}
+                                                                <option defaultValue="2" selected={anime.watchlists?.status == 2}>視聴中</option>
+                                                                <option defaultValue="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
                                                             </select>
                                                             <textarea
                                                                 name="note"
