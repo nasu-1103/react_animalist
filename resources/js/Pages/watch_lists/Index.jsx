@@ -53,7 +53,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                 <th className="mt-4 w-36">エディット</th>
                                             </tr>
                                         </thead>
-                                        
+
                                         <tbody>
                                             {/* アニメごとにテーブルを作成 */}
                                             {animeGroup.animes.map(anime => {
@@ -81,7 +81,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                         <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
                                                             <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl mt-2'>
-                                                                <option value="-1" selected={!anime.watchlists || anime.watchlists.status === -1}>未視聴</option>
+                                                                {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
+                                                                {anime.watchlists == null && <option value="-1">未視聴</option>}
                                                                 <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
                                                                 <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
                                                             </select>
