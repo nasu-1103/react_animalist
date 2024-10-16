@@ -97,7 +97,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                             </textarea>
                                                         </td>
                                                         <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                                            <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
+                                                            <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists[0]?.id}>削除</button>
                                                         </td>
                                                     </tr>
                                                 );
@@ -188,7 +188,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                         id="memo"
                                         rows="1"
                                         cols="12"
-                                        placeholder="例： 15:10"
+                                        placeholder="例：15:10"
                                         className="ml-8 rounded-xl"
                                         onChange={setNote}
                                         defaultValue={auth.user.notes}
