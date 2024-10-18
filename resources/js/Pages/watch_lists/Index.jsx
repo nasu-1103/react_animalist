@@ -99,7 +99,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                             </textarea>
                                                         </td>
                                                         <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                                            <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
+                                                            <button className="btn btn-outline btn-secondary" onClick={() => deleteWatchList(anime.watchlists?.id, anime.watchlists?.anime_id)}>削除</button>
                                                         </td>
                                                     </tr>
                                                 );
@@ -116,10 +116,13 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     );
 
     // ウォッチリストの削除処理
-    function deleteWatchList(event) {
-        destroy(route('watch_list.destroy', { "watch_list": event.target.dataset.id }));
+    function deleteWatchList(id, animeId) {
+        destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
-        document.getElementById('note-' + event.target.dataset.animeId).value = '';
+        const noteElement = document.getElementById('note-' + animeId)
+        if (noteElement) {
+            noteElement.value = '';
+        }
     }
 
     // ステータス変更の処理
