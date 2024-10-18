@@ -19,8 +19,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
             animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1 ? true : false).includes(true) ? true : false
     );
 
-    console.dir(animeGroupsLocal)
-
     // 一致したアニメグループのリストを作成
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
@@ -136,11 +134,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
     // 非表示リストにアニメグループを追加する処理
     function addHiddenList(animeGroupId) {
-
-        console.log("clicked")
-        // 対象のアニメグループIDを取得
-        const anime_group_id = event.target.dataset.animeGroupId;
-
         // 指定したアニメグループを非表示リストに追加
         post(route('watch_list.addHiddenList', { "anime_group_id": animeGroupId }));
     }
