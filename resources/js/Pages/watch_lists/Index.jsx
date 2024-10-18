@@ -32,7 +32,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                 <h2 className='card-title'>{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3
-                                 mb-2  mt-2 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
+                                 mb-2 mt-2 size-6" onClick={() => addHiddenList(animeGroup.id)}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
@@ -97,7 +97,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                             </textarea>
                                                         </td>
                                                         <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                                            <button className="btn btn-outline btn-secondary" onClick={deleteWatchList} data-id={anime.watchlists?.id}>削除</button>
+                                                            <button className="btn btn-outline btn-secondary" onClick={() => deleteWatchList(anime.watchlists?.id, anime.watchlists?.anime_id)}>削除</button>
                                                         </td>
                                                     </tr>
                                                 );
@@ -114,10 +114,15 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     );
 
     // ウォッチリストの削除処理
-    function deleteWatchList(event) {
-        destroy(route('watch_list.destroy', { "watch_list": event.target.dataset.id }));
+    function deleteWatchList(id, animeId) {
+        destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
-        document.getElementById('note-' + event.target.dataset.animeId).value = '';
+
+        // 該当するアニメのメモ欄をリセットする
+        const noteElement = document.getElementById('note-' + animeId)
+        if (noteElement) {
+            noteElement.value = '';
+        }
     }
 
     // ステータス変更の処理
@@ -130,12 +135,10 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     }
 
     // 非表示リストにアニメグループを追加する処理
-    function addHiddenList(event) {
-        // 対象のアニメグループIDを取得
-        const anime_group_id = event.target.dataset.animeGroupId;
+    function addHiddenList(animeGroupId) {
 
         // 指定したアニメグループを非表示リストに追加
-        post(route('watch_list.addHiddenList', { "anime_group_id": anime_group_id }));
+        post(route('watch_list.addHiddenList', { "anime_group_id": animeGroupId }));
     }
 
     // メモの内容を設定する処理
@@ -198,8 +201,10 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                         </div>
 
                         <Dropdown>
+                            {/* クリックでドロップダウンを表示する */}
                             <Dropdown.Trigger>
                                 <div className="text-end text-3xl mr-8">
+                                    {/* 非表示リストのアイコンを表示 */}
                                     {'+'}
                                 </div>
                             </Dropdown.Trigger>
@@ -209,6 +214,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     hiddenLists.map(hiddenList =>
                                         <Dropdown.Link
                                             href={route('watch_list.deleteHiddenList', hiddenList.anime_group.id)}
+                                            as={"button"}
                                             method="post"
                                         >
                                             {/* アニメグループのタイトルを表示 */}
