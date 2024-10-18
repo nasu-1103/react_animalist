@@ -19,6 +19,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
             animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1 ? true : false).includes(true) ? true : false
     );
 
+    console.dir(animeGroupsLocal)
+
     // 一致したアニメグループのリストを作成
     const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
@@ -32,7 +34,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                 <h2 className='card-title'>{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3
-                                 mb-2  mt-2 size-6" onClick={addHiddenList} data-anime-group-id={animeGroup.id}>
+                                 mb-2  mt-2 size-6" onClick={() => addHiddenList(animeGroup.id)} data-anime-group-id={animeGroup.id}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
@@ -130,12 +132,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     }
 
     // 非表示リストにアニメグループを追加する処理
-    function addHiddenList(event) {
+    function addHiddenList(animeGroupId) {
+
+        console.log("clicked")
         // 対象のアニメグループIDを取得
         const anime_group_id = event.target.dataset.animeGroupId;
 
         // 指定したアニメグループを非表示リストに追加
-        post(route('watch_list.addHiddenList', { "anime_group_id": anime_group_id }));
+        post(route('watch_list.addHiddenList', { "anime_group_id": animeGroupId }));
     }
 
     // メモの内容を設定する処理
@@ -209,6 +213,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     hiddenLists.map(hiddenList =>
                                         <Dropdown.Link
                                             href={route('watch_list.deleteHiddenList', hiddenList.anime_group.id)}
+                                            as={"button"}
                                             method="post"
                                         >
                                             {/* アニメグループのタイトルを表示 */}
