@@ -33,11 +33,10 @@ class WatchlistController extends Controller
             ->orderBy('created_at', 'desc') // 作成日時の降順で並び替え
             ->get();
 
-        // 取得した各アニメグループに対してループ処理を行う
         foreach ($anime_group_lists as $anime_group) {
-            // アニメグループに含まれる各アニメに対してループ処理を行う
+            // 各アニメグループ内のアニメを1つずつチェック
             foreach ($anime_group->animes as $anime) {
-                // アニメが視聴済みかどうかをチェック
+                // アニメが視聴済みかチェック
                 if ($anime->watchlists?->status == 1) {
                     // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
                     $anime_group->watchList_count += 1;
@@ -61,7 +60,7 @@ class WatchlistController extends Controller
         // ステータスが1または2の場合、ユーザーIDとアニメIDが一致するウォッチリストを取得
         if ($status === "1" || $status === "2") {
             $watchLists = WatchList::whereUserId(Auth::user()->id)->whereAnimeId($anime_id)->get();
-            // 既に登録されている場合、最初のウォッチリストを削除
+            // 既に同じウォッチリストがある場合、削除する
             if ($watchLists->count() >= 1) {
                 $watchLists[0]->delete();
             }
@@ -97,10 +96,10 @@ class WatchlistController extends Controller
 
     public function deleteHiddenList($anime_group_id)
     {
-        // 指定されたアニメグループIDのレコードを検索
+        // 指定されたアニメグループIDに該当するデータを取得
         UserHiddenList::whereAnimeGroupId($anime_group_id)
 
-            // 現在ログイン中のユーザーのレコードを取得
+            // 現在ログイン中のユーザーに該当するデータを取得して非表示リストから削除
             ->whereUserId(Auth::user()->id)
             ->delete();
     }
@@ -110,7 +109,7 @@ class WatchlistController extends Controller
         // ログイン中のユーザーを取得
         $user = User::find(Auth::user()->id);
 
-        // ユーザーが存在する場合、ノートを更新し、保存
+        // ユーザーが存在する場合、ノートを更新し保存
         if ($user) {
             $user->notes = $note;
             $user->save();
