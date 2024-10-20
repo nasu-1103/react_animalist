@@ -14,9 +14,9 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
-        animeGroup => animeGroup.name.includes(data.keyword) ||
+        animeGroup => !!(animeGroup.name.includes(data.keyword) ||
             // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
-            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1 ? true : false).includes(true) ? true : false
+            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
     );
 
     // 一致したアニメグループのリストを作成
@@ -36,7 +36,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
-                                {animeGroup.animes_count == animeGroup.watchList_count &&
+                                {animeGroup.animes_count === animeGroup.watchList_count &&
                                     <span className="text-3xl ml-2 mb-2">👑</span>
                                 }
                             </div>
@@ -80,11 +80,11 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                         <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
-                                                            <select onChange={changeStatus} data-id={anime.id} className='align-top rounded-xl mt-2'>
+                                                            <select onChange={changeStatus} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} data-id={anime.id} className='align-top rounded-xl mt-2'>
                                                                 {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
-                                                                {anime.watchlists == null && <option value="-1">未視聴</option>}
-                                                                <option value="2" selected={anime.watchlists?.status == 2}>視聴中</option>
-                                                                <option value="1" selected={anime.watchlists?.status == 1}>視聴済み</option>
+                                                                {anime.watchlists === null && <option value="-1">未視聴</option>}
+                                                                <option value="2">視聴中</option>
+                                                                <option value="1">視聴済み</option>
                                                             </select>
                                                             <textarea
                                                                 name="note"
