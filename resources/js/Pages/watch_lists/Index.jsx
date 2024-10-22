@@ -3,9 +3,24 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
 
-const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatchList }) => {
-    const [notes, setNotes] = useState(animeGroup.animes.map(anime => anime.watchlists?.notes ?? ''));
-    return (
+export default function WatchList({ auth, animeGroups, hiddenLists }) {
+    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
+        // 検索キーワードの初期値を設定
+        'keyword': ''
+    });
+
+    // フラッシュメッセージの設定
+    const [flashMessage, setFlashMessage] = useState('');
+
+    // キーワードと一致するアニメグループを検索
+    const animeGroupsLocal = animeGroups.filter(
+        animeGroup => !!(animeGroup.name.includes(data.keyword) ||
+            // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
+            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
+    );
+
+    // 一致したアニメグループのリストを作成
+    const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
         <>
             {/* アニメグループの情報を表示 */}
             <div className="text-gray-900">
@@ -30,34 +45,34 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                 <div className="card-actions relative overflow-x-auto shadow-sm sm:rounded-lg text-gray-300 active:text-gray-200">
                                     <table className="w-full text-gray-700 text-center text-nowrap">
                                         <thead>
-                                            <tr>
-                                                <th className="mt-4 w-24">話数</th>
-                                                <th className="mt-4 w-72">サブタイトル</th>
-                                                <th className="mt-4 w-48">視聴日</th>
-                                                <th className="mt-4 w-16">ステータス</th>
-                                                <th className="mt-4 w-36">エディット</th>
-                                            </tr>
+                                        <tr>
+                                            <th className="mt-4 w-24">話数</th>
+                                            <th className="mt-4 w-72">サブタイトル</th>
+                                            <th className="mt-4 w-48">視聴日</th>
+                                            <th className="mt-4 w-16">ステータス</th>
+                                            <th className="mt-4 w-36">エディット</th>
+                                        </tr>
                                         </thead>
 
                                         <tbody>
                                             {/* アニメごとにテーブルを作成 */}
-                                            {animeGroup.animes.map((anime, animeIndex) => {
+                                            {animeGroup.animes.map(anime => {
                                                 // アニメの視聴日を取得
                                                 const createdAt = anime.watchlists?.created_at;
 
-                                                // Dateオブジェクトに変換
-                                                const dateObj = createdAt ? new Date(createdAt) : null;
+                                            // Dateオブジェクトに変換
+                                            const dateObj = createdAt ? new Date(createdAt) : null;
 
-                                                // 年月日時分秒をそれぞれ取得
-                                                const year = dateObj ? dateObj.getFullYear() : "----";
-                                                const month = dateObj ? String(dateObj.getMonth() + 1).padStart(2, '0') : "--";
-                                                const day = dateObj ? String(dateObj.getDate()).padStart(2, '0') : "--";
-                                                const hours = dateObj ? String(dateObj.getHours()).padStart(2, '0') : "--";
-                                                const minutes = dateObj ? String(dateObj.getMinutes()).padStart(2, '0') : "--";
-                                                const seconds = dateObj ? String(dateObj.getSeconds()).padStart(2, '0') : "--";
+                                            // 年月日時分秒をそれぞれ取得
+                                            const year = dateObj ? dateObj.getFullYear() : "----";
+                                            const month = dateObj ? String(dateObj.getMonth() + 1).padStart(2, '0') : "--";
+                                            const day = dateObj ? String(dateObj.getDate()).padStart(2, '0') : "--";
+                                            const hours = dateObj ? String(dateObj.getHours()).padStart(2, '0') : "--";
+                                            const minutes = dateObj ? String(dateObj.getMinutes()).padStart(2, '0') : "--";
+                                            const seconds = dateObj ? String(dateObj.getSeconds()).padStart(2, '0') : "--";
 
-                                                // フォーマットされた日時
-                                                const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "";
+                                            // フォーマットされた日時
+                                            const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "";
 
                                                 return (
                                                     <tr key={anime.id} className="w-full text-center">
@@ -65,7 +80,7 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                         <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
-                                                            <select onChange={(e) => changeStatus(e, anime.id, notes[animeIndex])} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} className='align-top rounded-xl mt-2'>
+                                                            <select onChange={changeStatus} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} data-id={anime.id} className='align-top rounded-xl mt-2'>
                                                                 {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
                                                                 {anime.watchlists === null && <option value="-1">未視聴</option>}
                                                                 <option value="2">視聴中</option>
@@ -78,17 +93,15 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                                                 cols="12"
                                                                 placeholder="メモ"
                                                                 className="ml-6 rounded-xl xl:inline-block mt-2"
-                                                                value={notes[animeIndex]}
-                                                                onChange={(e) => setNotes(notes.map((note, idx) => idx === animeIndex ? e.target.value : note))}
-                                                            >
+                                                                defaultValue={anime.watchlists?.notes ?? ''}>
                                                             </textarea>
-                                                        </td>
-                                                        <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
-                                                            <button className="btn btn-outline btn-secondary" onClick={() => deleteWatchList(anime.watchlists?.id, anime.watchlists?.anime_id)}>削除</button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
+                                                    </td>
+                                                    <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
+                                                        <button className="btn btn-outline btn-secondary" onClick={() => deleteWatchList(anime.watchlists?.id, anime.watchlists?.anime_id)}>削除</button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                         </tbody>
                                     </table>
                                 </div>
@@ -122,8 +135,11 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
 
-        // リロードをして、データの再取得
-        window.location.reload()
+        // 該当するアニメのメモ欄をリセットする
+        const noteElement = document.getElementById('note-' + animeId)
+        if (noteElement) {
+            noteElement.value = '';
+        }
     }
 
     // ステータス変更の処理
