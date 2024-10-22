@@ -1,26 +1,11 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function WatchList({ auth, animeGroups, hiddenLists }) {
-    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
-        // 検索キーワードの初期値を設定
-        'keyword': ''
-    });
-
-    // フラッシュメッセージの設定
-    const [flashMessage, setFlashMessage] = useState('');
-
-    // キーワードと一致するアニメグループを検索
-    const animeGroupsLocal = animeGroups.filter(
-        animeGroup => !!(animeGroup.name.includes(data.keyword) ||
-            // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
-            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
-    );
-
-    // 一致したアニメグループのリストを作成
-    const animeGroupsLists = animeGroupsLocal.map(animeGroup =>
+const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatchList }) => {
+    const [notes, setNotes] = useState(animeGroup.animes.map(anime => anime.watchlists?.notes ?? ''));
+    return (
         <>
             {/* アニメグループの情報を表示 */}
             <div className="text-gray-900">
@@ -29,10 +14,10 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                     <div className="card bg-base-100 shadow-md mt-6 text-lg">
                         <div className="card-body flex">
                             <div className="flex">
-                                <h2 className='card-title'>{animeGroup.name}</h2>
+                                <h2 className="card-title">{animeGroup.name}</h2>
                                 {/* アイコンを表示してクリック時に非表示リストを表示 */}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-3
-                                 mb-2 mt-2 size-6" onClick={() => addHiddenList(animeGroup.id)}>
+                                    mb-2 mt-2 size-6" onClick={() => addHiddenList(animeGroup.id)}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                                 {/* 全てのアニメが視聴済みの場合、👑を表示 */}
@@ -56,7 +41,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
                                         <tbody>
                                             {/* アニメごとにテーブルを作成 */}
-                                            {animeGroup.animes.map(anime => {
+                                            {animeGroup.animes.map((anime, animeIndex) => {
                                                 // アニメの視聴日を取得
                                                 const createdAt = anime.watchlists?.created_at;
 
@@ -80,7 +65,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                         <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
-                                                            <select onChange={changeStatus} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} data-id={anime.id} className='align-top rounded-xl mt-2'>
+                                                            <select onChange={(e) => changeStatus(e, anime.id, notes[animeIndex])} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} className='align-top rounded-xl mt-2'>
                                                                 {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
                                                                 {anime.watchlists === null && <option value="-1">未視聴</option>}
                                                                 <option value="2">視聴中</option>
@@ -93,7 +78,9 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                                                 cols="12"
                                                                 placeholder="メモ"
                                                                 className="ml-6 rounded-xl xl:inline-block mt-2"
-                                                                defaultValue={anime.watchlists?.notes ?? ''}>
+                                                                value={notes[animeIndex]}
+                                                                onChange={(e) => setNotes(notes.map((note, idx) => idx === animeIndex ? e.target.value : note))}
+                                                            >
                                                             </textarea>
                                                         </td>
                                                         <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
@@ -109,8 +96,25 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                         </div>
                     </div>
                 }
-            </div>
+            </div >
         </>
+    )
+}
+
+export default function WatchList({ auth, animeGroups, hiddenLists }) {
+    const { data, setData, post, delete: destroy, recentlySuccessful } = useForm({
+        // 検索キーワードの初期値を設定
+        'keyword': ''
+    });
+
+    // フラッシュメッセージの設定
+    const [flashMessage, setFlashMessage] = useState('');
+
+    // キーワードと一致するアニメグループを検索
+    const animeGroupsLocal = animeGroups.filter(
+        animeGroup => !!(animeGroup.name.includes(data.keyword) ||
+            // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
+            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
     );
 
     // ウォッチリストの削除処理
@@ -118,19 +122,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
 
-        // 該当するアニメのメモ欄をリセットする
-        const noteElement = document.getElementById('note-' + animeId)
-        if (noteElement) {
-            noteElement.value = '';
-        }
+        // リロードをして、データの再取得
+        window.location.reload()
     }
 
     // ステータス変更の処理
-    function changeStatus(event) {
-        const anime_id = event.target.dataset.id;
+    function changeStatus(event, animeId, note) {
         const status = event.target.value;
-        const note = document.getElementById('note-' + anime_id).value;
-        post(route('watch_list.store', { "anime_id": anime_id, "status": status, "note": note }));
+        post(route('watch_list.store', { "anime_id": animeId, "status": status, "note": note }));
         setFlashMessage('登録を編集しました。');
     }
 
@@ -226,8 +225,16 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                         </Dropdown>
 
                         {/* アニメグループリストにデータがない場合に表示 */}
-                        {animeGroupsLists.length !== 0 ?
-                            animeGroupsLists :
+                        {animeGroupsLocal.length !== 0 ?
+                            animeGroupsLocal.map(animeGroup => (
+                                <AnimeGroupsLists
+                                    key={animeGroup.id}
+                                    animeGroup={animeGroup}
+                                    addHiddenList={addHiddenList}
+                                    changeStatus={changeStatus}
+                                    deleteWatchList={deleteWatchList}
+                                />
+                            )) :
                             <p className="text-center">投稿はありません。</p>
                         }
                     </div>
