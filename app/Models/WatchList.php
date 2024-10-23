@@ -24,4 +24,9 @@ class WatchList extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i',
     ];
+
+    protected function serializeDate(\DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }
