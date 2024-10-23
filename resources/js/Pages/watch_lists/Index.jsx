@@ -4,7 +4,7 @@ import { Head, useForm, router } from '@inertiajs/react';
 import { useState } from 'react';
 
 // アニメグループリストを表示し、非表示追加、ステータス変更、削除の設定
-const AnimeGroupsLists = ({animeGroup, addHiddenList, changeStatus, deleteWatchList}) => {
+const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatchList }) => {
     // アニメごとのメモを管理、ウォッチリストにメモがなければ空文字を設定
     const [notes, setNotes] = useState(animeGroup.animes.map(anime => anime.watchlists?.notes ?? ''));
     return (
@@ -44,28 +44,12 @@ const AnimeGroupsLists = ({animeGroup, addHiddenList, changeStatus, deleteWatchL
                                         <tbody>
                                             {/* アニメごとにテーブルを作成 */}
                                             {animeGroup.animes.map((anime, animeIndex) => {
-                                                // アニメの視聴日を取得
-                                                const createdAt = anime.watchlists?.created_at;
-
-                                                // Dateオブジェクトに変換
-                                                const dateObj = createdAt ? new Date(createdAt) : null;
-
-                                                // 年月日時分秒をそれぞれ取得
-                                                const year = dateObj ? dateObj.getFullYear() : "----";
-                                                const month = dateObj ? String(dateObj.getMonth() + 1).padStart(2, '0') : "--";
-                                                const day = dateObj ? String(dateObj.getDate()).padStart(2, '0') : "--";
-                                                const hours = dateObj ? String(dateObj.getHours()).padStart(2, '0') : "--";
-                                                const minutes = dateObj ? String(dateObj.getMinutes()).padStart(2, '0') : "--";
-                                                const seconds = dateObj ? String(dateObj.getSeconds()).padStart(2, '0') : "--";
-
-                                                // フォーマットされた日時
-                                                const formattedDateTime = dateObj ? `${year}-${month}-${day} ${hours}:${minutes}:${seconds}` : "";
 
                                                 return (
                                                     <tr key={anime.id} className="w-full text-center">
                                                         <td className="border border-slate-300 px-6 py-4">{anime.episode}話</td>
                                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
-                                                        <td className="border border-slate-300 px-6 py-4">{formattedDateTime}</td>
+                                                        <td className="border border-slate-300 px-6 py-4">{anime.watchlists?.created_at}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
                                                             <select onChange={(e) => changeStatus(e, anime.id, notes[animeIndex])} defaultValue={anime.watchlists ? `${anime.watchlists.status}` : "-1"} className='align-top rounded-xl mt-2'>
                                                                 {/* ウォッチリストが null（未視聴の場合）、未視聴を表示して、変更されたら日時をクリアする */}
