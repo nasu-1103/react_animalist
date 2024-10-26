@@ -1,10 +1,10 @@
 import Dropdown from '@/Components/Dropdown';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 // アニメグループリストを表示し、非表示追加、ステータス変更、削除の設定
-const AnimeGroupsLists = ({animeGroup, addHiddenList, changeStatus, deleteWatchList}) => {
+const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatchList }) => {
     // アニメごとのメモを管理、ウォッチリストにメモがなければ空文字を設定
     const [notes, setNotes] = useState(animeGroup.animes.map(anime => anime.watchlists?.notes ?? ''));
     return (
