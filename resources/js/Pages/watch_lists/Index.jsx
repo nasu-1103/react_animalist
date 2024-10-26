@@ -11,7 +11,7 @@ const AnimeGroupsLists = ({animeGroup, addHiddenList, changeStatus, deleteWatchL
         <>
             {/* アニメグループの情報を表示 */}
             <div className="text-gray-900">
-                {/* 非表示リストの要素数が1でないかつ、表示する場合 */}
+                {/* アニメグループが非表示リストに1つ以上ある場合、表示 */}
                 {animeGroup.hidden_lists.length !== 1 &&
                     <div className="card bg-base-100 shadow-md mt-6 text-lg">
                         <div className="card-body flex">
@@ -99,7 +99,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     // キーワードと一致するアニメグループを検索
     const animeGroupsLocal = animeGroups.filter(
         animeGroup => !!(animeGroup.name.includes(data.keyword) ||
-            // サブタイトルが部分一致していたら true 、 一致しなかったら fasle
+            // 各アニメのサブタイトルにキーワードが含まれているか検索
             animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
     );
 
@@ -108,7 +108,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
 
-        // 画面リロードして、データを再取得
+        // 画面をリロードして、データを再取得
         window.location.reload()
     }
 
@@ -210,7 +210,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                             </Dropdown.Content>
                         </Dropdown>
 
-                        {/* アニメグループリストにデータがない場合に表示 */}
+                        {/* データがある場合、各アニメグループごとにリストを作成 */}
                         {animeGroupsLocal.length !== 0 ?
                             animeGroupsLocal.map(animeGroup => (
                                 <AnimeGroupsLists
@@ -221,6 +221,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     deleteWatchList={deleteWatchList}
                                 />
                             )) :
+                            // アニメグループリストにデータがない場合に表示
                             <p className="text-center">投稿はありません。</p>
                         }
                     </div>
