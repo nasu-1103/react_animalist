@@ -104,7 +104,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     );
 
     // ウォッチリストの削除処理
-    function deleteWatchList(id, animeId) {
+    function deleteWatchList(id) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
 
@@ -228,6 +228,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout >
+        </AuthenticatedLayout>
     );
 }
