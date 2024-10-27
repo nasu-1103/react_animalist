@@ -198,6 +198,7 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                                     // 非表示リストのリンクを表示
                                     hiddenLists.map(hiddenList =>
                                         <Dropdown.Link
+                                            key={hiddenList.anime_group.id}
                                             href={route('watch_list.deleteHiddenList', hiddenList.anime_group.id)}
                                             as={"button"}
                                             method="post"
