@@ -8,6 +8,7 @@ use App\Models\UserHiddenList;
 use App\Models\WatchList;
 use App\Models\AnimeGroup;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class WatchlistController extends Controller
@@ -34,14 +35,25 @@ class WatchlistController extends Controller
             ->get();
 
         foreach ($anime_group_lists as $anime_group) {
-            // 各アニメグループ内のアニメを1つずつチェック
+            // Annict APIからエピソードの総数を取得
+            $totalEpisodes = $this->annict_episode_count($anime_group->annict_id);
+
+            // 全エピソード数をセット
+            $anime_group->total_episodes = $totalEpisodes;
+
+            // ウォッチリストの初期化
+            $anime_group->watchList_count = 0;
+
             foreach ($anime_group->animes as $anime) {
                 // アニメが視聴済みかチェック
                 if ($anime->watchlists?->status == 1) {
                     // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
                     $anime_group->watchList_count += 1;
-                };
+                }
             }
+
+            // 全てのエピソードが視聴済みかチェック
+            $anime_group->is_complete = $anime_group->watchList_count === $totalEpisodes;
         }
 
         // ログイン中のユーザーの非表示リストと関連するアニメグループを取得
@@ -114,5 +126,16 @@ class WatchlistController extends Controller
             $user->notes = $note;
             $user->save();
         }
+    }
+
+    public function annict_episode_count($annictId, $page = 1)
+    {
+        // Annict APIからエピソードの総数を取得
+        $token = env('ANNICT_TOKEN');
+        $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
+        $res = Http::withToken($token)->get($url);
+
+        // エピソードの総数を返す
+        return $res->json()['total_count'];
     }
 }
