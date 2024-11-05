@@ -22,7 +22,7 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                     mb-2 mt-2 size-6" onClick={() => addHiddenList(animeGroup.id)}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
-                                {/* 全てのアニメが視聴済みの場合、👑を表示 */}
+                                {/* 全てのエピソードが視聴済みの場合、👑を表示 */}
                                 {animeGroup.is_complete && (
                                     <span className="text-3xl ml-2 mb-2">👑</span>
                                 )}
