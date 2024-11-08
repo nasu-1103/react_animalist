@@ -135,7 +135,7 @@ class WatchlistController extends Controller
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
         $res = Http::withToken($token)->get($url);
 
-        // エピソードの総数を返す
+        // 総エピソード数を返す
         return $res->json()['total_count'];
     }
 }
