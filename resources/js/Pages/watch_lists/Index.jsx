@@ -95,21 +95,26 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
     // フラッシュメッセージの設定
     const [flashMessage, setFlashMessage] = useState('');
+    const [animeGroupsLocal, setAnimeGroupsLocal] = useState(animeGroups);
 
     // キーワードと一致するアニメグループを検索
-    const animeGroupsLocal = animeGroups.filter(
+    const filteredAnimeGroups = animeGroupsLocal.filter(
         animeGroup => !!(animeGroup.name.includes(data.keyword) ||
-            // 各アニメのサブタイトルにキーワードが含まれているか検索
-            animeGroup.animes.map(anime => anime.sub_title.indexOf(data.keyword) !== -1).includes(true))
+            animeGroup.animes.some(anime => anime.sub_title.includes(data.keyword)))
     );
 
     // ウォッチリストの削除処理
-    function deleteWatchList(id) {
+    function deleteWatchList(id, animeGroupId) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
 
-        // 画面をリロードして、データを再取得
-        window.location.reload()
+        setAnimeGroupsLocal(prevGroups =>
+            prevGroups.map(group =>
+                group.id === animeGroupId
+                    ? { ...group, animes: group.animes.filter(anime => anime.watchlists?.id !== id) }
+                    : group
+            )
+        );
     }
 
     // ステータス変更の処理
@@ -212,8 +217,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                         </Dropdown>
 
                         {/* データがある場合、各アニメグループごとにリストを作成 */}
-                        {animeGroupsLocal.length !== 0 ?
-                            animeGroupsLocal.map(animeGroup => (
+                        {filteredAnimeGroups.length !== 0 ?
+                            filteredAnimeGroups.map(animeGroup => (
                                 <AnimeGroupsLists
                                     key={animeGroup.id}
                                     animeGroup={animeGroup}
