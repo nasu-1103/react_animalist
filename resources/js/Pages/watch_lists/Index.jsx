@@ -142,7 +142,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
 
     // ステータス変更の処理
     function changeStatus(status, animeId, note) {
-        const status = event.target.value;
         post(route('watch_list.store', { "anime_id": animeId, "status": status, "note": note }));
         setFlashMessage('登録を編集しました。');
     }
