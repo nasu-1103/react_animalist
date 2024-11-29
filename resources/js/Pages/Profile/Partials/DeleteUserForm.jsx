@@ -80,7 +80,7 @@ export default function DeleteUserForm({ className = '' }) {
                             placeholder="パスワード"
                         />
 
-                        <InputError message={errors.password} className="mt-2" />
+                        <InputError message={errors.password} className="mt-2 font-medium text-red-500" />
                     </div>
 
                     <div className="mt-6 flex justify-end">
