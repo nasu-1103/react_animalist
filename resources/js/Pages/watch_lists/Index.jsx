@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatchList }) => {
     // アニメごとのメモを管理、ウォッチリストにメモがなければ空文字を設定
     const [notes, setNotes] = useState(animeGroup.animes.map(anime => anime.watchlists?.notes ?? ''));
+
     // アニメごとのステータスを管理、ウォッチリストにステータスがなければ"-1"を設定
     const [statuses, setStatuses] = useState(animeGroup.animes.map(anime => anime.watchlists ? anime.watchlists.status : "-1"));
     // アニメのステータスを更新
@@ -26,6 +27,7 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
         ));
 
         // ウォッチリストから該当アニメを削除
+
         deleteWatchList(id, animeId);
     };
 
@@ -73,7 +75,9 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                                         <td className="border border-slate-300 px-6 py-4">{anime.sub_title}</td>
                                                         <td className="border border-slate-300 px-6 py-4">{anime.watchlists?.created_at}</td>
                                                         <td className="border border-slate-300 px-6 py-4">
+
                                                             <select onChange={(e) => handleStatusChange(e, animeIndex, anime.id, notes[animeIndex])} value={statuses[animeIndex]} className='align-top rounded-xl mt-2'>
+
                                                                 {anime.watchlists === null && <option value="-1">未視聴</option>}
                                                                 <option value="2">視聴中</option>
                                                                 <option value="1">視聴済み</option>
@@ -91,7 +95,9 @@ const AnimeGroupsLists = ({ animeGroup, addHiddenList, changeStatus, deleteWatch
                                                             </textarea>
                                                         </td>
                                                         <td className="flex border border-slate-300 px-6 py-6 justify-center gap-4">
+
                                                             <button className="btn btn-outline btn-secondary" onClick={() => handleDelete(anime.watchlists?.id, animeIndex, anime.id)}>削除</button>
+
                                                         </td>
                                                     </tr>
                                                 );
@@ -117,12 +123,14 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     // フラッシュメッセージの設定
     const [flashMessage, setFlashMessage] = useState('');
 
+
     // animeGroupsの初期値を設定
     let [animeGroupsLocal, setAnimeGroupsLocal] = useState(animeGroups);
 
     useEffect(() => {
         // animeGroupsが変更された場合に更新
         setAnimeGroupsLocal(animeGroups);
+
 
     }, [animeGroups]);
 
@@ -137,6 +145,8 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
     function deleteWatchList(id) {
         destroy(route('watch_list.destroy', { "watch_list": id }));
         setFlashMessage('登録を削除しました。');
+
+
 
     }
 
@@ -186,7 +196,6 @@ export default function WatchList({ auth, animeGroups, hiddenLists }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
                         <div className="mr-1 mt-3 mb-4">
-
                             {/* フラッシュメッセージを表示 */}
                             {recentlySuccessful && <div className="mb-4 ml-7 text-gray-700 text-md">{flashMessage}</div>}
 
