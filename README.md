@@ -41,6 +41,9 @@
 - Herd
 - Table Plus
 
+## プロジェクト管理
+- Notion
+
 ## フロントエンド
 - HTML
 - CSS
