@@ -37,8 +37,14 @@ class WatchlistController extends Controller
         foreach ($anime_group_lists as $anime_group) {
             // Annict APIからエピソードの総数を取得
             $totalEpisodes = $this->annict_episode_count($anime_group->annict_id);
-            $anime_group->total_episodes = $totalEpisodes; // 全エピソード数をセット
-            $anime_group->watchList_count = 0; // 初期化
+
+
+            // 全エピソード数をセット
+            $anime_group->total_episodes = $totalEpisodes;
+
+            // ウォッチリストの初期化
+            $anime_group->watchList_count = 0;
+
 
             foreach ($anime_group->animes as $anime) {
                 // アニメが視聴済みかチェック
@@ -48,7 +54,9 @@ class WatchlistController extends Controller
                 }
             }
 
-            // 全エピソードが視聴済みかどうかをチェック
+
+            // 全てのエピソードが視聴済みかチェック
+
             $anime_group->is_complete = $anime_group->watchList_count === $totalEpisodes;
         }
 
@@ -126,10 +134,19 @@ class WatchlistController extends Controller
 
     public function annict_episode_count($annictId, $page = 1)
     {
+
+        // Annict APIからエピソードの総数を取得
+
         $token = env('ANNICT_TOKEN');
         $url = "https://api.annict.com/v1/episodes?filter_work_id=" . $annictId . "&sort_sort_number=asc&page=" . $page;
         $res = Http::withToken($token)->get($url);
 
-        return $res->json()['total_count'];
+
+        // 総エピソード数を取得
+        $totalCount = $res->json()['total_count'];
+
+        // 総エピソード数が0の場合は1に修正
+        return $totalCount > 0 ? $totalCount : 1;
     }
 }
+

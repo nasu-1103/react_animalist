@@ -1,66 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ⭐ animalist
+## プロジェクトの概要
+視聴したアニメを効率的に管理し、視聴状況を簡単に確認できるツールになります。
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 制作背景
+現在のアニメ業界では、多くの作品が1クール（3ヶ月）単位で放送され、その後、続編が制作されるまでに一定の期間が設けられることが多く見られます。そのため、視聴者がどのアニメのシーズンを視聴し、何話まで観たのかを簡単に管理・確認できるアプリを制作しました。
 
-## About Laravel
+<br>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# ⭐ アプリ機能一覧
+## 主な機能
+- 権限ごとの機能制限
+- APIでアニメを検索・登録
+- グループごとのエピソード数を確認
+- タイトルやエピソードを検索（部分・完全一致対応）
+- 視聴進捗をアイコンで可視化
+- メモ欄に視聴中の時間を入力可能
+- 時間を削除し、「視聴済み」でアイコン変化
+- 全エピソード視聴で👑アイコン表示
+- ページネーション機能
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<br>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 仕様制限
+- 全50話以下の作品に対応
 
-## Learning Laravel
+## 認証機能
+- ログイン機能
+- ログアウト機能
+- ログインID変更機能
+- パスワード変更機能
+- アカウント削除機能
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+<br>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# ⭐ 使用技術
+## 開発環境
+- VSCode
+- XAMPP
+- HTTPie
+- Herd
+- Table Plus
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## プロジェクト管理
+- Notion
 
-## Laravel Sponsors
+## フロントエンド
+- HTML
+- CSS
+- Tailwind CSS
+- React.js
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## バックエンド
+- PHP 8.2.12
+- Laravel 11.9
 
-### Premium Partners
+## 使用ライブラリー
+- daisyui
+- Laravel Breeze
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## データベース
+- MySQL
 
-## Contributing
+## インフラ
+- さくらVPS
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<br>
 
-## Code of Conduct
+## ER図
+![ER図](assets/ER図.png "ER図")
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<br>
 
-## Security Vulnerabilities
+## インフラ構成図
+![インフラ構成図](assets/インフラ構成図.png "インフラ構成図")
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+<br>
 
-## License
+# ⭐ 工夫した点
+- API連携によるアニメデータの取得
+- 登録したアニメを話数やエピソードなどでの検索機能
+- エピソードの視聴状況を✅と👀アイコンで表示
+- 1つの作品で全エピソードを視聴済みの場合は👑アイコンの表示
+- 視聴時間入力用のメモ欄を実装
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<br>
+
+# ⭐ 苦労した点
+- 👑アイコンを表示させるロジックを実装
+- 追加機能実装(APIデータ取得)に伴いテーブル設計を変更
+- ユーザーの権限により画面を制御する実装
+- UI/UXの調整でTailwind CSS、daisyUIを使用した画面レイアウトの構築
+
+<br>
+
+# ⭐ 参考にしたサービス
+## 提供元サービス様：[Annict ドキュメント](https://developers.annict.com/docs)
