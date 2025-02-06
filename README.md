@@ -82,13 +82,18 @@
 
 <br>
 
-## インフラ構成図
+# ⭐ インフラ構成図
 ![インフラ構成図](assets/インフラ構成図.png "インフラ構成図")
 
 <br>
 
-## ER図
+# ⭐ ER図
 ![ER図](assets/ER図.png "ER図")
+
+<br>
+
+# ⭐ 機能詳細
+## [animalist ドキュメント](https://docs.google.com/presentation/d/1GUDappzFxerYfUBmpilgUDI7Flssz2SODmz3895xxE4/edit?usp=sharing)
 
 <br>
 
