@@ -45,15 +45,12 @@ class WatchlistController extends Controller
             // ウォッチリストの初期化
             $anime_group->watchList_count = 0;
 
+            // ステータスの設定
+            $watched = "1";
 
             foreach ($anime_group->animes as $anime) {
-                // ステータスの設定
-                $watched = "";
-                $unwatched = "";
-                $status === "1" ? $watched = "1" : $unwatched = "2";
-
                 // アニメが視聴済みかチェック
-                if ($anime->watchlists?->status === 1) {
+                if ($anime->watchlists?->status ===  $watched) {
                     // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
                     $anime_group->watchList_count += 1;
                 }
