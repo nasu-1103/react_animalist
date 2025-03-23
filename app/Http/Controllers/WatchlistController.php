@@ -74,9 +74,8 @@ class WatchlistController extends Controller
     public function store($anime_id, $status, $note = null)
     {
         // ステータスの設定
-        $watched = "";
-        $unwatched = "";
-        $status === "1" ? $watched = "1" : $unwatched = "2";
+        $watched = "1";
+        $unwatched = "2";
 
         // ステータスに基づき、ユーザーIDとアニメIDが一致するウォッチリストを取得
         if ($status === $watched  || $status === $unwatched) {
