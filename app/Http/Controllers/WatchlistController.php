@@ -45,18 +45,18 @@ class WatchlistController extends Controller
             // ウォッチリストの初期化
             $anime_group->watchList_count = 0;
 
+            // ステータスの設定
+            $watched = 1;
 
             foreach ($anime_group->animes as $anime) {
                 // アニメが視聴済みかチェック
-                if ($anime->watchlists?->status == 1) {
+                if ($anime->watchlists?->status ===  $watched) {
                     // 視聴済みのアニメがあれば、視聴済みのカウントを増やす
                     $anime_group->watchList_count += 1;
                 }
             }
 
-
             // 全てのエピソードが視聴済みかチェック
-
             $anime_group->is_complete = $anime_group->watchList_count === $totalEpisodes;
         }
 
@@ -73,8 +73,12 @@ class WatchlistController extends Controller
 
     public function store($anime_id, $status, $note = null)
     {
-        // ステータスが1または2の場合、ユーザーIDとアニメIDが一致するウォッチリストを取得
-        if ($status === "1" || $status === "2") {
+        // ステータスの設定
+        $watched = "1";
+        $unwatched = "2";
+
+        // ステータスに基づき、ユーザーIDとアニメIDが一致するウォッチリストを取得
+        if ($status === $watched  || $status === $unwatched) {
             $watchLists = WatchList::whereUserId(Auth::user()->id)->whereAnimeId($anime_id)->get();
             // 既に同じウォッチリストがある場合、削除する
             if ($watchLists->count() >= 1) {
@@ -149,4 +153,3 @@ class WatchlistController extends Controller
         return $totalCount > 0 ? $totalCount : 1;
     }
 }
-
