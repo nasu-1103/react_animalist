@@ -46,7 +46,7 @@ class WatchlistController extends Controller
             $anime_group->watchList_count = 0;
 
             // ステータスの設定
-            $watched = "1";
+            $watched = 1;
 
             foreach ($anime_group->animes as $anime) {
                 // アニメが視聴済みかチェック
