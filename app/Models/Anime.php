@@ -13,6 +13,6 @@ class Anime extends Model
 
     public function watchlists()
     {
-        return $this->hasOne(watchlist::class);
+        return $this->hasOne(Watchlist::class);
     }
 }
