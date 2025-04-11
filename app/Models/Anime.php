@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\WatchList;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +14,6 @@ class Anime extends Model
 
     public function watchlists()
     {
-        return $this->hasOne(watchlist::class);
+        return $this->hasOne(WatchList::class);
     }
 }
