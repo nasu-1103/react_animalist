@@ -12,8 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -28,12 +26,6 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'なす',
             'email' => 'test@test.com',
-        ]);
-
-        $this->call([
-            // AnimeSeeder::class,
-            // AnimeGroupSeeder::class,
-            // WatchListSeeder::class,
         ]);
     }
 }
